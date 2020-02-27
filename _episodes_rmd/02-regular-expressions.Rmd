@@ -1,0 +1,51 @@
+---
+title:   Regular expressions  
+teaching: 10
+exercises: 10
+questions: 
+- "
+- "
+objectives:
+- "Describe the difference between a text string and a regex pattern"
+- "Use helper function `str_detect()` to find text"
+- "Find a simple exact match in a vector"
+keypoints:
+- "Regular expressions are the way we can describe text patterns to a computer"
+- "Patterns can match either exact text or text that meets certain criteria"
+- "The `str_detect()` function will search for a regex pattern within a text vector"
+source: Rmd
+---
+
+## Describing text to computers
+
+Regular expressions are the language ...
+
+> ## Fruit data
+> Vectors and text...
+> How many fruit?
+{: .challenge}
+
+## How to find a fruit
+
+Compare with Find in Excel
+Want to find 'apple', how can R help us - `str_detect()`
+
+> ## Kicking the str_detect tyres
+> Run the following commands, what is the output and why?
+> (match multiple with full words, match a substring, fail to match with capitals, throw in a space?)
+> Write a str_detect command to find these fruits:
+{:. challenge}
+
+## Not just exact matches
+
+The power in regular expressions comes from...
+
+> ## Specific currants
+> In words, how could we find just the 'blackcurrant' and 'redcurrant' from the fruits, while not detecting the plain 'currant'? 
+
+## Wildcards
+
+regex patterns have many special characters that are not matched exactly..
+
+'.currant'
+

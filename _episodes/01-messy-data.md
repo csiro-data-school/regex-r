@@ -24,7 +24,7 @@ source: Rmd
 Have you ever...
 
 > ## Bird sightings in Canberra
-> Download this file and examine its contents... 
+> Download [this file]({{page.root}}/data/bird_counts.csv) and examine its contents... 
 > Can you...
 {: .challenge}
 
@@ -33,7 +33,7 @@ Have you ever...
 > Advantages
 > Could you do it again? Would it be any faster next time 
 > you need to add in some observations?
-{. discussion}
+{: .discussion}
 
 ## How computers can help
 - need precise instructions

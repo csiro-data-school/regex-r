@@ -1,7 +1,7 @@
 ---
 title:   Regular expressions  
-teaching: 10
-exercises: 10
+teaching: 15
+exercises: 15
 questions: 
 - "
 - "
@@ -19,6 +19,13 @@ source: Rmd
 ## Describing text to computers
 
 Regular expressions are the language ...
+
+> ## Other approaches
+> There may be alternative approaches that can also achieve the same result. Think about those 
+> alternatives as you work through these challenges and consider whether regular expressions are 
+> the best option.
+> {Insert "I used regex to solve a problem ..."}
+{: .callout}
 
 > ## Fruit data
 > Vectors and text...
@@ -42,6 +49,7 @@ The power in regular expressions comes from...
 
 > ## Specific currants
 > In words, how could we find just the 'blackcurrant' and 'redcurrant' from the fruits, while not detecting the plain 'currant'? 
+{: .challenge}
 
 ## Wildcards
 
@@ -49,3 +57,18 @@ regex patterns have many special characters that are not matched exactly..
 
 '.currant'
 
+> ## What value?
+> What are the potential benefits/problems with this method?
+> Reproducible, repeatable, extensible, recorded. Complex, extensible? 
+{: .discussion}
+
+## Regex in data frames
+Usually, have data in data frames. Remember about columns being stored as vectors, so can use these
+regex functions on columns of a data frame (eg. within mutate)
+
+Eg of this (first w/ mutate, then with filter)
+
+> ## Fruit frames
+> make a fruit data frame, using the regex patterns for currants above, filter the df to 1) all currants
+> 2) all specific currants
+{: .challenge}

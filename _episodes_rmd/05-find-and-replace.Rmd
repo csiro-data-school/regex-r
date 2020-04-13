@@ -1,0 +1,30 @@
+---
+title: Replacing text
+teaching: 15
+exercises: 20
+questions: 
+- "
+- "
+objectives:
+- "Learn how to replace a regex pattern with specific text"
+- "Explain how to replace multiple occurances of a pattern"
+- "Use matched text in the replacement pattern"
+keypoints:
+- "`str_replace()` will find a regex pattern and replace it with the provided text"
+- "If the regex pattern occurs multiple times in a string, `str_replace_all()` will replace all of them"
+- "Backreferences can be used to include part of the matched pattern in the replacement text"
+source: Rmd
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Find and replace
+
+## Replace more than once
+
+## Find and remove
+
+## Use match in replacement
+

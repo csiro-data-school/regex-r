@@ -1,0 +1,111 @@
+---
+title: Regular expression patterns
+teaching: 25
+exercises: 25
+objectives:
+- "Understand the basic features of regular expression patterns"
+- "Use regex patterns to find specific text strings"
+keypoints:
+- "`|` will match the pattern on either side of the symbol"
+- "To match any of a range of characters, include them within square brackets: `[]`"
+- "`^` matches the start of a line, and `$` matches the end of a line"
+- "Repeated matchings can be specified within `{}`, or using the `?`,`*` and `+` shortcuts"
+source: Rmd
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Regular expressions have a series of additional special symbols (like `.`) that allow you to more
+specifically describe the text pattern you are searching for. These patterns can be as complex as required to identify the correct text in your data. 
+
+## Alternative matches
+
+`|` matches the text on either side of the symbol. 
+<| examples>
+
+
+
+`[]` matches any of the characters within it
+<[] examples, incl negation with ^>
+
+> ## Alternative birds
+> What is a regular expression pattern that would match:
+> 
+> 1. Text with an uppercase `K` or lowercase `k` character
+> 2. Text with either an `i`, `o` or `u` character
+> 3. Any uppercase text character 
+>
+> Using the bird count data, apply the first regex pattern to the `species` column using `mutate()`
+> and `str_detect()`. 
+>
+> Then apply the second regex pattern to the `location` column and the third regex pattern to the 
+> `count` column
+{: .challenge}
+
+## Grouping and anchoring
+
+There are a number of ways to control how these patterns are interpreted. 
+
+`()` groups characters together so that the pattern inside is considered separately. This has many 
+uses, for example to limit what alternatives are considered.
+
+(Magpie|cockatoo)
+Gang( |-)gang example
+
+> ## More groupings
+> Using `"Gang( |-)gang"` as a regex pattern works for rows two and eight, butfails to match the 
+> fifth row of the birds data (with "Gang Gang cockatoo"). Extend this pattern to detect all 
+> three rows
+{: .challenge}
+
+The patterns can also be 'anchored' to specific parts of the text string being searched.
+
+`^` is a special character meaning 'the start of a line'.
+`$` is the opposite -- 'the end of a line'.
+
+Ainslie vs ^Ainslie example
+o vs o$ example
+
+> ## Getting more specific
+> Using groupings with `()`, create a regex pattern that will match all the mountains in the 
+> `location` column using `str_detect()`.
+> 
+> Modify your pattern above with an anchoring to exclude 'Black Mtn' from the matched values.
+{: .challenge}
+
+## Quantifying matches
+
+As well as describing the text patterns to match, we can also specify how many times a pattern may
+be repeated using `{}`.
+
+These apply to the regex pattern element immediately *before* the quantification pattern, which may
+be a single character, bracked expression, or a grouping.
+
+`{n}` matched exactly *n* times
+`{n,m}` matched between *n* and *m* times
+`{n, }` matched at least *n* times
+`{,m}` matched up to *m* times
+
+> ## What's being matched?
+> As we move to more complicated examples it will be harder to identify problems with our patterns
+> because `str_detect()` only returns a `TRUE` or `FALSE` value. Instead we will start to use 
+> `str_extract()` which returns the actual text that is matched by the regex pattern.
+{:.callout }
+
+<Quant examples - match o{2} w/ str_detect, match[a-z]{2} (not what you expect with str_detect, use to introduce str_extract), simplify our gang gang example with '(G|g)ang-?'>
+
+Some of these quantifications are so commonly used that they have shortcut symbols:
+`?` matched 0-1 times -- so an *optional* pattern (same as `{0,1}`)
+`*` matched *any* number of times and may be absent (same as `{0,}`)
+`+` matched at least once (same as `{1,}`)
+
+<More Quant examples - "Mtn?", then "M(oun)?tn?", Gang gang examples with ".ang +" and then "(.ang )+"?>
+
+> ## Don't repeat yourself
+> Using the birds data, write a regex pattern using `str_detect()` or `str_extract()` that will 
+> match values in the `date` column that start with two digits, followed by a separator (`/` or `-`).
+> 
+> Can you modify this pattern so that it matches dates with two digits for the day, month, and year?
+{: .challenge}

@@ -1,0 +1,100 @@
+---
+title: Advanced regular expression patterns
+teaching: 15
+exercises: 20
+objectives:
+- "Learn how to escape special symbols to match them exactly"
+- "Understand what predefined shortcuts exist to simplify regex patterns"
+- "Use backreferences to refer to matched groups"
+keypoints:
+- "To find literal matches for any of these special characters, escape them with `\`"
+- "To escape characters in R, you need to escape them twice"
+- "There are a number of shortcut symbols to make writing regex patterns easier"
+- "These include `\w`, `\s`, `\d`, and `\b` for words, spaces, digits and boundaries"
+- "The uppercase versions of these are the inverse matches (`\W`, `\S`, etc)"
+- "Text matched within a grouping using `()` can be referred to using `\1` for the first group, `\2` for the second"
+- "In R, each of these patterns need the `\` to be escaped again to be written as a string."
+source: Rmd
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The previous elements will be enough to create almost any regex pattern you need. However in certain
+circumstances more advanced features may be needed to construct a matching pattern.
+
+## Ignoring special symbol behaviour
+We have introduced several symbols that have special meaning in regular expression patterns
+(like `.` for 'any character'). But what if the text you are trying to match contains those
+characters? 
+<Eg searching for `.` in location>
+
+To match a symbol exactly we need a way to tell it to not use it's special behaviour. This is called
+"escaping" the symbol, and is done by putting a `\` before the symbol.
+
+<Error with `\.`>
+
+This introduces a problem for using regex patterns in R, because we write the patterns using a 
+string. Strings already use `\` for escaping characters, so our `\.` pattern gives an error. To fix
+this, we actually need to escape the symbol **twice** when we are writing it.
+
+The *string* `"\\."` creates the regular expression `\.`, which matches a literal `.` in our text
+
+<Right thing with `\\.`>
+
+> ## Finding something special
+> The grouping characters -- `(` and `)` -- are special symbols in regex patterns. What string do 
+> you need to write in R to match a `(` character?
+> 
+> 1. `"("`
+> 2. `"\("`
+> 3. `"\\("`
+>
+> Write a regex pattern using `str_extract()` that will extract the bracketed statement in the 
+> `count` column of the birds data.
+{: .challenge}
+
+## Shorthand symbols
+
+`\w` for **word characters**: Any alphanumeric character, or an underscore. Equivalent to
+`[a-zA-Z0-9_]`
+
+> ## Double escaping
+> As with the discussion above, the regex pattern for any word character is `\w` with an escape 
+> character. This means that in R, we need to escape the pattern again when writing it as a string 
+> -- `"\\w"`. You will see these notes using the regex pattern (`\w`) when discussing the symbols, 
+> but the code examples will show how to use these patterns in a string (`"\\w"`).
+{" .callout}
+
+`\s` for **space characters**: Any whitespace characters. Spaces, tabs, etc.
+
+`\d` for **digits**: Any numeric character. Equivalent to `[0-9]`
+
+Inverse match by capitalising them. Eg: \W for NOT a word character
+
+<Challenge simplify some earlier patterns using shortcuts>
+
+## Additional anchoring
+
+`\b` for a *boundary*: The transition between 'space' and 'word' characters, or vice versa.
+
+<Example finding middle words diferent gangs when using \s vs \b>
+
+## Backreferences
+
+Matching text within () can be referred to using `\1`
+
+More useful when we come to replacing text, but can be used in matching patterns as well.
+
+<Doubled letters eg, first '(.){2}', but {2} doesn't take into account the matched text. Then '(.)\\1' to get the doubled letters>
+
+<Challenge to match doubled letters in locations (will hit the double space in line 5 unless they use \w)>
+
+<Challenge to match locations with the same starting letters for each word - "(\\b\\w).+\\1">
+
+Multiple groupings with `\2`, etc.
+
+<Example with date palindromes: "(\\d)(\\d)\\W\\2\\1">
+
+<Challenge show detect on species for "(\\w)(\\w)\\1" and "(\\w)(\\w)\\2", explain why the output differs, (run extract if you want to see the text that each pattern is matching)>

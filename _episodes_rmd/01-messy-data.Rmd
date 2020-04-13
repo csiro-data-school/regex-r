@@ -3,8 +3,8 @@ title:   Messy data
 teaching: 10
 exercises: 30
 questions:
-- ""
-- ""
+- "
+- "
 objectives:
 - "Understand common problems with human-recorded data"
 - "Appreciate the need for consistant data"

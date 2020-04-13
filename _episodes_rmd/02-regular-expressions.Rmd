@@ -1,10 +1,7 @@
 ---
-title:   Regular expressions  
+title:  Regular expressions  
 teaching: 15
-exercises: 15
-questions: 
-- "
-- "
+exercises: 20
 objectives:
 - "Describe the difference between a text string and a regex pattern"
 - "Use helper function `str_detect()` to find text"
@@ -13,6 +10,7 @@ keypoints:
 - "Regular expressions are the way we can describe text patterns to a computer"
 - "Patterns can match either exact text or text that meets certain criteria"
 - "The `str_detect()` function will search for a regex pattern within a text vector"
+- "`.` is a wildcard pattern"
 source: Rmd
 ---
 

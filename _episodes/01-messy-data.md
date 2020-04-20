@@ -13,7 +13,7 @@ objectives:
 - "Precisely describe steps needed to clean data for consistancy"
 keypoints:
 - "Cleaning data is excel (or word) is hard."
-- "Manually editing data frames   is not reproducible"
+- "Manually editing data frames is not reproducible"
 - "'Patterns' allow computers to automate this task for us"
 source: Rmd
 ---
@@ -21,32 +21,65 @@ source: Rmd
 
 
 ## Why is data messy
-Have you ever...
+It is very rare for a data file to be perfectly tidy and ready to work with when you first recieve
+it. Data is frequently collected in a way that makes it easy to record, rather than in a way that
+makes it easy to analyse later on.
+
+Manual data entry or changed collection formats can both result in data inconsistencies that need
+to be standardised. Even automated data collection can have problems when the data is recorded in a
+way that is easy for computers to understand, but difficult for humans. These problems can be 
+particularly obvious with text based data which is often far less consistently structured than
+numeric data.
 
 > ## Bird sightings in Canberra
-> Download [this file]({{page.root}}/data/bird_counts.csv) and examine its contents... 
-> Can you...
+> Download [this file]({{page.root}}/data/bird_counts.csv) into the `data` folder for your project
+> and examine its contents in the image below.
+> **Don't** open the file in Excel, because it will try to automatically format some of the data columns.
+> ![]({{page.root}}/fig/01-bird-data.png){:class="fig-responsive" style="max-width:80%"}
+> While only a small file, it contains examples of many of the issues you may encounter working with
+> text data.
+>
+> Can you identify five problems with this file that would need fixing?
 {: .challenge}
 
-> ## Describe the process
-> Challenges
-> Advantages
-> Could you do it again? Would it be any faster next time 
-> you need to add in some observations?
+> ## Fixing mistakes
+> How would you go about fixing these mistakes currently?
+>
+> What are some *advantages* of your proposed approach, and what *challenges* will there be?
+> 
+> Could you do repeat the process again or provide a detailed explanation of what you have done to 
+> another person? Would it be any faster next time? 
+>
+> Is your approach scalable? What if the file was 1,000 lines long? 100,000?
 {: .discussion}
 
-## How computers can help
-- need precise instructions
-- think about data as text (in this context)
+## Computer cleaning
+Computers can help tidying up text data just like with numeric data. All we need to do is provide 
+precise instructions that describe how to work with our text data. By writing these steps down in 
+code, we gain the usual benefits of scripting our analysis -- there is a written record of our process
+that can be reviewed, and our instructions can be repeated in the future on the same or new datasets.
 
-> ## Using patterns to 'select' data
-> Consider the following list of ...
-> In groups, in English, describe how you would ...
-> Come back together and discuss with whole class (each group)
-{: .challenge}
+When working with text, we talk about 'patterns' that can be used for searching within a text string.
+Consider a calendar date written down, say, 23/8/2014. We all recognise a date as being a date when 
+we see one written down this way. Why? Because there’s a consistent pattern to it. We could describe
+the pattern of a date written this way as: one or two digits, a forward slash, one or two digits, a
+forward slash, then either 2 digits or 4 digits. Using that pattern of what a date looks like, we 
+can identify other dates in text even if they are not exactly the same.
 
-> ## Selecting fruit
-> Multiple choice
-> English explanations
+> ## Using patterns to describe text
+> Consider the following list of words:
+> 
+> * Thursday
+> * birthday
+> * Anzac Day
+> * Tuesday
+> * sunday
+> * Christmas Day
+>
+> Can you describe a pattern that would uniquely specify the following pairs of words from the list: 
+> 
+> 1. "Thursday" and "Tuesday"
+> 2. "sunday" and "birthday"
+> 3. "Anzac Day" and "Christmas Day"
 {: .challenge}
 

@@ -5,7 +5,7 @@ exercises: 20
 objectives:
 - "Describe the difference between a text string and a regex pattern"
 - "Use helper function `str_detect()` to find text"
-- "Find a simple exact match in a vector"
+- "Find an exact text match in a vector"
 keypoints:
 - "Regular expressions are the way we can describe text patterns to a computer"
 - "Patterns can match either exact text or text that meets certain criteria"
@@ -17,61 +17,159 @@ source: Rmd
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
 knitr_fig_path("02-")
+library(tidyverse)
 ```
 
-## Describing text to computers
+## Regular expressions
 
-Regular expressions are the language ...
+Regular expressions (regex for short) are the 'language' used to specify patterns that can be used 
+to search through text. The `stringr` package (part of the tidyverse) provides a consistent method
+for working with regex patterns in R.
+
+Regular expressions make use of symbols with special meaning to allow the freedom to describe
+a pattern that is as specific or as ambiguous as required. Some uses for regular expressions can even
+involve complex find and replace operations where the replacement text depends on the text pattern
+that was matched.
 
 > ## Other approaches
-> There may be alternative approaches that can also achieve the same result. Think about those 
-> alternatives as you work through these challenges and consider whether regular expressions are 
-> the best option.
-> {Insert "I used regex to solve a problem ..."}
+>
+> > Some people, when confronted with a problem, think "I know, I'll use regular expressions." Now
+> > they have two problems.
+>
+> Regular expressions are a very powerful tool, but can at times be complex to work with and difficult
+> to read and understand in the future. There may be alternative approaches that can also achieve 
+> the same result. Think about alternatives as you work through these challenges and consider whether
+> regular expressions are the best option.
 {: .callout}
 
-> ## Fruit data
-> Vectors and text...
-> How many fruit?
+## Vector refresher
+
+When working with text data in R, it will probably be stored as a vector. Vectors in R are a collection
+of values, that must all be of the same data type (see the 
+[vector notes](https://csiro-data-school.github.io/r/16-Additional-content---Data-types/index.html#vectors) 
+for a more detailed explanation). 
+
+> ## Fruit vectors
+> The `stringr` package has an inbuilt text vector for practicing text manipulation called `fruit`.
+> Load the `stringr` package and explore the `fruit` vector to answer the following:
+> 
+> 1. How many elements are in the `fruit` vector?
+> 2. What is the value of the first element?
+> 3. What is the value of the last element?
 {: .challenge}
 
-## How to find a fruit
+## Finding fruit
 
-Compare with Find in Excel
-Want to find 'apple', how can R help us - `str_detect()`
+At their simplest, regular expressions look to match the provided pattern exactly. This works exactly
+the same as using the "Find" command in other programs. The `str_detect()` function can be used to
+search for a pattern within some text. The first argument is the vector of text to be searched, and
+the second argument is the pattern to search for (as a text string). The output of `str_detect()` 
+is a `TRUE` or `FALSE` for each element of the text vector indicating whether the pattern was found.
 
-> ## Kicking the str_detect tyres
-> Run the following commands, what is the output and why?
-> (match multiple with full words, match a substring, fail to match with capitals, throw in a space?)
-> Write a str_detect command to find these fruits:
-{:. challenge}
+For example, suppose we wanted to find the word 'apricot' in the `fruit` vector:
 
-## Not just exact matches
+```{r finding-apricot}
+str_detect(fruit, pattern = "apricot")
+```
 
-The power in regular expressions comes from...
+Since only the second element of `fruit` is `apricot`, only the second element of the output of 
+`str_detect()` is `TRUE`.
+
+> ## Understanding `str_detect()` 
+> Run the following five commands. For each command, how many `TRUE`s are in the output? Can you
+> explain why you get that result?
+>
+> 1. `str_detect(fruit, "apple")`
+> 2. `str_detect(fruit, "rine")`
+> 3. `str_detect(fruit, "Banana")`
+> 4. `str_detect(fruit, "berry")`
+> 5. `str_detect(fruit, " berry")`
+>
+{: .challenge}
+
+> ## Working with `str_detect()`
+> Write a `str_detect()` pattern that will find the following fruits:
+> 
+> 1. `bell pepper` and `chilli pepper`.
+> 2. `clementine` and `cloudberry`.
+> 3. `kiwi fruit`, `star fruit`, and `ugli fruit` (but not `breadfruit`, `dragonfruit`, etc.).
+{: .challenge}
+
+## Regular expression syntax
+
+The real power in regular expressions comes from the ability to specify patterns that describe the
+type of text to match, rather than trying to match text exactly. This allows you to match text that
+has a common structure, but might have very different text.
 
 > ## Specific currants
-> In words, how could we find just the 'blackcurrant' and 'redcurrant' from the fruits, while not detecting the plain 'currant'? 
+> In words, how could we identify 'blackcurrant' and 'redcurrant' from the list of fruits, 
+> while ignoring the plain 'currant'? 
 {: .challenge}
 
 ## Wildcards
 
-regex patterns have many special characters that are not matched exactly..
+Regular expression patterns have a number of special symbols that are used to describe the structure
+of the text you are trying to match. The `.` character is a 'wildcard' symbol, and will match on *any*
+text character, letter, number, whitespace, or symbol.
 
-'.currant'
+```{r using-wildcards}
+# Matches blackcurrant, redcurrant, and currant
+str_detect(fruit, "currant")
+
+# Only matches blackcurrant and redcurrant
+str_detect(fruit, ".currant")
+```
+
+> ## Using wildcards
+> How many fruits have the letter `e` two characters after the letter `a`?
+{: .challenge}
+
+This wildcard symbol can be useful when you know the overall structure of the text you are trying to 
+match, but the exact text is not important.
 
 > ## What value?
-> What are the potential benefits/problems with this method?
-> Reproducible, repeatable, extensible, recorded. Complex, extensible? 
+> What are the potential benefits of an approach like this? Can you imagine any problems you might
+> encounter?
+> > ## Solution
+> > Reproducible, repeatable, extensible, recorded and clear. 
+> > Complex, truly extensible, truly clear/readable?? 
+> {: .solution}
 {: .discussion}
 
-## Regex in data frames
-Usually, have data in data frames. Remember about columns being stored as vectors, so can use these
-regex functions on columns of a data frame (eg. within mutate)
+## Text in data frames
+Like `str_detect()`, the regular expression functions we will be covering work on vectors of text 
+data. Usually however, we have data stored in data frames. Within a data frame, each column is stored
+as a separate vector. So we can use these regular expression functions within any function
+that works on a column of a data frame (such as `mutate()`)
 
-Eg of this (first w/ mutate, then with filter)
+For example, if we put our `fruit` data into a data frame:
+
+```{r make-a-fruit-df}
+framed_fruit <- tibble(fruit_name = fruit)
+```
+
+we can create a new column with the results of `str_detect()` by using the name of a column with text
+data as the first argument.
+
+```{r mutate-fruit}
+framed_fruit %>% 
+  mutate(has_apple = str_detect(fruit_name, "apple"))
+```
+
+Since `str_detect()` provides a `TRUE` or `FALSE` result, it can even be used in a `filter()` 
+function():
+
+```{r filtering-fruit}
+framed_fruit %>% 
+  filter(str_detect(fruit_name, "apple"))
+```
+
 
 > ## Fruit frames
-> make a fruit data frame, using the regex patterns for currants above, filter the df to 1) all currants
-> 2) all specific currants
+> Make a data frame containing the fruit data (as above).
+> 
+> Using the regex patterns for currants above, filter the data frame to the rows containing
+> 
+> 1. All currants (`blackcurrant`, `redcurrant`, and `currant`)
+> 2. Just the `blackcurrant` and `redcurrant`
 {: .challenge}

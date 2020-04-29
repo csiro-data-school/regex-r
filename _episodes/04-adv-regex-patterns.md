@@ -406,34 +406,34 @@ birds %>%
 
 > ## What's going on
 > Have a look at the output from the following two patterns:
-
-~~~
-birds %>% 
-  mutate(
-    pattern_one = str_detect(species, "(\\w)(\\w)\\1"),
-    pattern_two = str_detect(species, "(\\w)(\\w)\\2")
-  )
-~~~
-{: .language-r}
-
-
-
-~~~
-# A tibble: 10 x 6
-   location       date     species       count           pattern_one pattern_two
-   <chr>          <chr>    <chr>         <chr>           <lgl>       <lgl>      
- 1 Mount. Ainslie 21/12/19 Magpie        10              FALSE       FALSE      
- 2 Black Mtn      09/02/2… Gang-gang co… 2               TRUE        TRUE       
- 3 Botanic Garde… 15/2/20  Magpie        1 (didn't see … FALSE       FALSE      
- 4 LBG            7-12-19  Magpie-lark   4               FALSE       FALSE      
- 5 Mt  Ainslie    16/2/20  Gang Gang co… 2               TRUE        TRUE       
- 6 Ainslie Oval   Last Su… Sulphur-cres… Eight           TRUE        TRUE       
- 7 Lake Burley  … 14/12/19 Crimson Rose… 4               FALSE       TRUE       
- 8 Lake Burley G… 8/2/20   Gang gang co… 9               TRUE        TRUE       
- 9 Mt. Majura     23/2/20  Magpie lark   12              FALSE       FALSE      
-10 Downer Oval    18/11/19 King-Parrot   6               FALSE       TRUE       
-~~~
-{: .output}
+> 
+> ~~~
+> birds %>% 
+>   mutate(
+>     pattern_one = str_detect(species, "(\\w)(\\w)\\1"),
+>     pattern_two = str_detect(species, "(\\w)(\\w)\\2")
+>   )
+> ~~~
+> {: .language-r}
+> 
+> 
+> 
+> ~~~
+> # A tibble: 10 x 6
+>    location       date     species       count           pattern_one pattern_two
+>    <chr>          <chr>    <chr>         <chr>           <lgl>       <lgl>      
+>  1 Mount. Ainslie 21/12/19 Magpie        10              FALSE       FALSE      
+>  2 Black Mtn      09/02/2… Gang-gang co… 2               TRUE        TRUE       
+>  3 Botanic Garde… 15/2/20  Magpie        1 (didn't see … FALSE       FALSE      
+>  4 LBG            7-12-19  Magpie-lark   4               FALSE       FALSE      
+>  5 Mt  Ainslie    16/2/20  Gang Gang co… 2               TRUE        TRUE       
+>  6 Ainslie Oval   Last Su… Sulphur-cres… Eight           TRUE        TRUE       
+>  7 Lake Burley  … 14/12/19 Crimson Rose… 4               FALSE       TRUE       
+>  8 Lake Burley G… 8/2/20   Gang gang co… 9               TRUE        TRUE       
+>  9 Mt. Majura     23/2/20  Magpie lark   12              FALSE       FALSE      
+> 10 Downer Oval    18/11/19 King-Parrot   6               FALSE       TRUE       
+> ~~~
+> {: .output}
 > Why are the results different and what text is being matched by each? Check if you are correct by
 > running them with `str_extract()` instead.
 {: .challenge}

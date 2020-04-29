@@ -22,7 +22,6 @@ source("../bin/chunk-options.R")
 knitr_fig_path("04-")
 
 library(tidyverse)
-library(flair)
 
 birds <- read_csv("data/bird_counts.csv")
 ```
@@ -187,13 +186,13 @@ birds %>%
 
 > ## What's going on
 > Have a look at the output from the following two patterns:
-```{r}
-birds %>% 
-  mutate(
-    pattern_one = str_detect(species, "(\\w)(\\w)\\1"),
-    pattern_two = str_detect(species, "(\\w)(\\w)\\2")
-  )
-```
+> ```{r}
+> birds %>% 
+>   mutate(
+>     pattern_one = str_detect(species, "(\\w)(\\w)\\1"),
+>     pattern_two = str_detect(species, "(\\w)(\\w)\\2")
+>   )
+> ```
 > Why are the results different and what text is being matched by each? Check if you are correct by
 > running them with `str_extract()` instead.
 {: .challenge}

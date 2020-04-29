@@ -1,7 +1,7 @@
 ---
 title: Replacing text
 teaching: 15
-exercises: 20
+exercises: 30
 questions: 
 - "
 - "
@@ -19,13 +19,188 @@ source: Rmd
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
 knitr_fig_path("05-")
+
+library(tidyverse)
+
+birds <- read_csv("data/bird_counts.csv")
 ```
 
 ## Find and replace
 
+Along with matching patterns or extracting text we can use regular expressions to perform find and
+replace operations. By combining regex patterns and backreferences it is possible to build quite
+complex substitutions should you need them.
+
+To swap a matched regex pattern with some replacement text, we use the `str_replace()` function. This function requires three arguments, the text to search, what to find, and what to replace it with.
+
+For example, say that you know the uninformative date in the birds data was actually recorded on 
+19/1/20.
+
+```{r simple-replace}
+birds %>% 
+  mutate(fixed_date = str_replace(date, "Last Sunday", "19/1/20"))
+```
+
+The text to find can use any of the regex patterns we have covered. It will be replaced in each row
+where a match is found.
+
+```{r replace-regex}
+# Matches all rows
+birds %>% 
+  mutate(first_word = str_replace(location, "^\\w+", "First"))
+
+# Matches most rows
+birds %>% 
+  mutate(first_word = str_replace(location, "^[A-Z][a-z]+", "First"))
+
+```
+
+> ## Replace once
+> Using `str_replace()` and the birds data:
+>
+> 1. Replace the "Eight" in the `count` column with the digit "8"
+> 2. Replace all hyphens ("-") in the `species` column with spaces (" ")
+> 3. Replace the digits for the year in the `date` column with the text "Year"
+{: .challenge}
+
 ## Replace more than once
+When more than one match can be found in a text string, `str_replace()` will only replace the first
+match.
+
+```{r replace-once}
+birds %>% 
+  mutate(no_caps = str_replace(location, "[A-Z]", "_"))
+```
+
+If we want to replace all possible matches in our text, we need to use `str_replace_all()`
+
+```{r}
+birds %>% 
+  mutate(no_caps = str_replace_all(location, "[A-Z]", "_"))
+```
 
 ## Find and remove
+You _could_ delete matched text by replacing it with an 'empty' string (`""`) using `str_replace()`.
+However this is such a common task that there is a shortcut function in `str_remove()` (and
+`str_remove_all()`).
+
+```{r replace-delete}
+birds %>% 
+  mutate(devowel = str_remove_all(species, "[aeiou]"))
+```
+
+> ## Replace more
+> Write a regex function that will:
+>
+> 1. Replace _each_ word in the `location` column with the text "word"
+> 2. Replace any word seven letters or longer in the `species` column with the text "long"
+> 3. Delete any non-numeric characters from the `count` column
+> 4. Create an `abbreviation` column containing just the uppercase letters from the `location` column
+{: .challenge}
 
 ## Use match in replacement
+Just like in our regex patterns, we can use backreferences (`\1`, `\2`, etc.) to make use of 
+'captured' text in our replacements.
 
+For example, the regex pattern `(\w+)` will match and capture a complete word (`+`: one or more, 
+`\w`: word characters). If we use the replacement pattern `*\1*`, it will replace the match with an
+asterisk (`*`), followed by the matched word (`\1`), followed by another asterisk (`*`).
+
+```{r backreference-replace}
+birds %>% 
+  mutate(fancy = str_replace_all(species, "(\\w+)", "*\\1*"))
+```
+
+As before, multiple matches can be referenced with increasing numbers.
+
+```{r capture-more}
+birds %>% 
+  mutate(first_last = str_replace(species, "^(\\w).+(\\w)$", "First: \\1, Last: \\2"))
+```
+
+Note that the entire matched pattern gets replaced. In the example above, because we matched the whole
+line with `.+` the entire line is replaced. If we wanted to keep that part of the text we would need
+to capture it as well with grouping brackets.
+
+```{r capture-all}
+birds %>% 
+  mutate(first_last = str_replace(species, "^(\\w)(.+)(\\w)$", "First: \\1, Last: \\3, Rest: \\2"))
+```
+
+> ## Complex replacements
+> Using backreferences:
+>
+> 1. Double each vowel in the `location` column
+> 2. Convert all dates in the `date` column to have four digit year values
+> 3. Replace the middle letters of each word in the `species` column with two underscores. For example,
+> `Crimson Rosella` should become `C__n R__a`
+> 4. Print the first and last *word* of each `species` using the template "First: <word>, Last: <word>"
+> (Tip: if you are having trouble, try including the boundary pattern -- `\b`)
+{: .challenge}
+
+## Constructing a substitution
+
+There are a few tips about the process that can help when trying to create a regex substution
+pattern. We will demonstrate it with an example of wanting to change the date column from "day/month/year"
+to "year:month:day (old: day/month/year)"
+
+1. Start by copying a real example of a whole string to match as your pattern
+
+*Pattern*: `21/12/19`
+
+2. Add any escape backslashes necessary of your text contains regex special symbols (not needed in this
+example)
+
+*Pattern*: `21/12/19`
+
+3. Circle the parts of the string you’d like to separately retain, with round brackets.
+
+*Pattern*: `((21)/(12)/(19))`
+
+4. Write out your replacement pattern, using backreferences to what you circled.
+
+*Pattern*: `((21)/(12)/(19))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+
+5. At this stage, the substitution should work, but only for the specific real example string that you’ve started with. Test it to make sure.
+
+```{r test-sub}
+birds %>% 
+  mutate(test_replace = str_replace(date, "((21)/(12)/(19))", "\\4:\\3:\\2 (old: \\1)"))
+```
+
+6. Finally, start abstracting your search pattern, replacing parts of your example string with wild-cards or character-classes as needed, to strike the balance between specificity and ambiguity required to match all that you want and not all that you don’t want.
+
+You may need to test your abstracted pattern often to make sure you are matching the right text. There
+will often be multiple regex patterns that match the 'correct' text. Your future self will thank you
+if you can come up with a pattern that is easier to read.
+
+Using digit/non-digit distinction as a 'simple' solution:
+*Pattern*: `((\\d+)\\D(\\d+)\\D(\\d+))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+
+```{r correct-match}
+birds %>% 
+  mutate(changed_date = str_replace(date, "((\\d+)\\D(\\d+)\\D(\\d+))", "\\4:\\3:\\2 (old: \\1)"))
+```
+
+Can get more specific, for example adding error checking using number of digits. But you trade off 
+accuracy of matching for complexity, so consider how complex a pattern needs to be to match the sort
+of data you are likely to receive.
+
+*Pattern*: `((\\d{1,2})\\D(\\d{1,2})\\D(\\d{2}|\\d{4}))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+
+> ## Putting it together
+> Create a cleaned version of the birds data called `clean_birds`. You will need to use multiple steps
+> and the regex functions `str_extract()`, `str_replace()`, and `str_remove()` (or their `XXXX_all()`
+> variants).
+>
+> A cleaned data frame should have:
+>
+> * Consistent naming for the `location` and `species` column so that each location/species has only
+> a single way of being recorded
+> * A consistent format for the `date`column 
+> * Additional information from the `count` column put in a new column called `notes`
+> * Only numeric values in the `count` column
+> * Any other problems you noticed in the 
+> [first challenge](../01-messy-data/index.html#bird-sightings-in-canberra) that have not otherwise
+> been fixed
+{: .challenge}

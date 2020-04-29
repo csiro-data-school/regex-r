@@ -3,7 +3,7 @@
 # Instead, please edit 05-find-and-replace.md in _episodes_rmd/
 title: Replacing text
 teaching: 15
-exercises: 20
+exercises: 30
 questions: 
 - "
 - "
@@ -22,9 +22,413 @@ source: Rmd
 
 ## Find and replace
 
+Along with matching patterns or extracting text we can use regular expressions to perform find and
+replace operations. By combining regex patterns and backreferences it is possible to build quite
+complex substitutions should you need them.
+
+To swap a matched regex pattern with some replacement text, we use the `str_replace()` function. This function requires three arguments, the text to search, what to find, and what to replace it with.
+
+For example, say that you know the uninformative date in the birds data was actually recorded on 
+19/1/20.
+
+
+~~~
+birds %>% 
+  mutate(fixed_date = str_replace(date, "Last Sunday", "19/1/20"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location         date      species            count                fixed_date
+   <chr>            <chr>     <chr>              <chr>                <chr>     
+ 1 Mount. Ainslie   21/12/19  Magpie             10                   21/12/19  
+ 2 Black Mtn        09/02/20… Gang-gang cockatoo 2                    09/02/2020
+ 3 Botanic Gardens  15/2/20   Magpie             1 (didn't see it, b… 15/2/20   
+ 4 LBG              7-12-19   Magpie-lark        4                    7-12-19   
+ 5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    16/2/20   
+ 6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                19/1/20   
+ 7 Lake Burley   G… 14/12/19  Crimson Rosella    4                    14/12/19  
+ 8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    8/2/20    
+ 9 Mt. Majura       23/2/20   Magpie lark        12                   23/2/20   
+10 Downer Oval      18/11/19  King-Parrot        6                    18/11/19  
+~~~
+{: .output}
+
+The text to find can use any of the regex patterns we have covered. It will be replaced in each row
+where a match is found.
+
+
+~~~
+# Matches all rows
+birds %>% 
+  mutate(first_word = str_replace(location, "^\\w+", "First"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location        date      species         count              first_word      
+   <chr>           <chr>     <chr>           <chr>              <chr>           
+ 1 Mount. Ainslie  21/12/19  Magpie          10                 First. Ainslie  
+ 2 Black Mtn       09/02/20… Gang-gang cock… 2                  First Mtn       
+ 3 Botanic Gardens 15/2/20   Magpie          1 (didn't see it,… First Gardens   
+ 4 LBG             7-12-19   Magpie-lark     4                  First           
+ 5 Mt  Ainslie     16/2/20   Gang Gang cock… 2                  First  Ainslie  
+ 6 Ainslie Oval    Last Sun… Sulphur-creste… Eight              First Oval      
+ 7 Lake Burley   … 14/12/19  Crimson Rosella 4                  First Burley   …
+ 8 Lake Burley Gr… 8/2/20    Gang gang cock… 9                  First Burley Gr…
+ 9 Mt. Majura      23/2/20   Magpie lark     12                 First. Majura   
+10 Downer Oval     18/11/19  King-Parrot     6                  First Oval      
+~~~
+{: .output}
+
+
+
+~~~
+# Matches most rows
+birds %>% 
+  mutate(first_word = str_replace(location, "^[A-Z][a-z]+", "First"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location        date      species         count              first_word      
+   <chr>           <chr>     <chr>           <chr>              <chr>           
+ 1 Mount. Ainslie  21/12/19  Magpie          10                 First. Ainslie  
+ 2 Black Mtn       09/02/20… Gang-gang cock… 2                  First Mtn       
+ 3 Botanic Gardens 15/2/20   Magpie          1 (didn't see it,… First Gardens   
+ 4 LBG             7-12-19   Magpie-lark     4                  LBG             
+ 5 Mt  Ainslie     16/2/20   Gang Gang cock… 2                  First  Ainslie  
+ 6 Ainslie Oval    Last Sun… Sulphur-creste… Eight              First Oval      
+ 7 Lake Burley   … 14/12/19  Crimson Rosella 4                  First Burley   …
+ 8 Lake Burley Gr… 8/2/20    Gang gang cock… 9                  First Burley Gr…
+ 9 Mt. Majura      23/2/20   Magpie lark     12                 First. Majura   
+10 Downer Oval     18/11/19  King-Parrot     6                  First Oval      
+~~~
+{: .output}
+
+> ## Replace once
+> Using `str_replace()` and the birds data:
+>
+> 1. Replace the "Eight" in the `count` column with the digit "8"
+> 2. Replace all hyphens ("-") in the `species` column with spaces (" ")
+> 3. Replace the digits for the year in the `date` column with the text "Year"
+{: .challenge}
+
 ## Replace more than once
+When more than one match can be found in a text string, `str_replace()` will only replace the first
+match.
+
+
+~~~
+birds %>% 
+  mutate(no_caps = str_replace(location, "[A-Z]", "_"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location         date     species          count               no_caps       
+   <chr>            <chr>    <chr>            <chr>               <chr>         
+ 1 Mount. Ainslie   21/12/19 Magpie           10                  _ount. Ainslie
+ 2 Black Mtn        09/02/2… Gang-gang cocka… 2                   _lack Mtn     
+ 3 Botanic Gardens  15/2/20  Magpie           1 (didn't see it, … _otanic Garde…
+ 4 LBG              7-12-19  Magpie-lark      4                   _BG           
+ 5 Mt  Ainslie      16/2/20  Gang Gang cocka… 2                   _t  Ainslie   
+ 6 Ainslie Oval     Last Su… Sulphur-crested… Eight               _inslie Oval  
+ 7 Lake Burley   G… 14/12/19 Crimson Rosella  4                   _ake Burley  …
+ 8 Lake Burley Gri… 8/2/20   Gang gang cocka… 9                   _ake Burley G…
+ 9 Mt. Majura       23/2/20  Magpie lark      12                  _t. Majura    
+10 Downer Oval      18/11/19 King-Parrot      6                   _owner Oval   
+~~~
+{: .output}
+
+If we want to replace all possible matches in our text, we need to use `str_replace_all()`
+
+
+~~~
+birds %>% 
+  mutate(no_caps = str_replace_all(location, "[A-Z]", "_"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location         date     species          count               no_caps       
+   <chr>            <chr>    <chr>            <chr>               <chr>         
+ 1 Mount. Ainslie   21/12/19 Magpie           10                  _ount. _inslie
+ 2 Black Mtn        09/02/2… Gang-gang cocka… 2                   _lack _tn     
+ 3 Botanic Gardens  15/2/20  Magpie           1 (didn't see it, … _otanic _arde…
+ 4 LBG              7-12-19  Magpie-lark      4                   ___           
+ 5 Mt  Ainslie      16/2/20  Gang Gang cocka… 2                   _t  _inslie   
+ 6 Ainslie Oval     Last Su… Sulphur-crested… Eight               _inslie _val  
+ 7 Lake Burley   G… 14/12/19 Crimson Rosella  4                   _ake _urley  …
+ 8 Lake Burley Gri… 8/2/20   Gang gang cocka… 9                   _ake _urley _…
+ 9 Mt. Majura       23/2/20  Magpie lark      12                  _t. _ajura    
+10 Downer Oval      18/11/19 King-Parrot      6                   _owner _val   
+~~~
+{: .output}
 
 ## Find and remove
+You _could_ delete matched text by replacing it with an 'empty' string (`""`) using `str_replace()`.
+However this is such a common task that there is a shortcut function in `str_remove()` (and
+`str_remove_all()`).
+
+
+~~~
+birds %>% 
+  mutate(devowel = str_remove_all(species, "[aeiou]"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location         date      species          count                devowel     
+   <chr>            <chr>     <chr>            <chr>                <chr>       
+ 1 Mount. Ainslie   21/12/19  Magpie           10                   Mgp         
+ 2 Black Mtn        09/02/20… Gang-gang cocka… 2                    Gng-gng cckt
+ 3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, b… Mgp         
+ 4 LBG              7-12-19   Magpie-lark      4                    Mgp-lrk     
+ 5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                    Gng Gng cckt
+ 6 Ainslie Oval     Last Sun… Sulphur-crested… Eight                Slphr-crstd…
+ 7 Lake Burley   G… 14/12/19  Crimson Rosella  4                    Crmsn Rsll  
+ 8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                    Gng gng cckt
+ 9 Mt. Majura       23/2/20   Magpie lark      12                   Mgp lrk     
+10 Downer Oval      18/11/19  King-Parrot      6                    Kng-Prrt    
+~~~
+{: .output}
+
+> ## Replace more
+> Write a regex function that will:
+>
+> 1. Replace _each_ word in the `location` column with the text "word"
+> 2. Replace any word seven letters or longer in the `species` column with the text "long"
+> 3. Delete any non-numeric characters from the `count` column
+> 4. Create an `abbreviation` column containing just the uppercase letters from the `location` column
+{: .challenge}
 
 ## Use match in replacement
+Just like in our regex patterns, we can use backreferences (`\1`, `\2`, etc.) to make use of 
+'captured' text in our replacements.
 
+For example, the regex pattern `(\w+)` will match and capture a complete word (`+`: one or more, 
+`\w`: word characters). If we use the replacement pattern `*\1*`, it will replace the match with an
+asterisk (`*`), followed by the matched word (`\1`), followed by another asterisk (`*`).
+
+
+~~~
+birds %>% 
+  mutate(fancy = str_replace_all(species, "(\\w+)", "*\\1*"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location        date     species          count             fancy            
+   <chr>           <chr>    <chr>            <chr>             <chr>            
+ 1 Mount. Ainslie  21/12/19 Magpie           10                *Magpie*         
+ 2 Black Mtn       09/02/2… Gang-gang cocka… 2                 *Gang*-*gang* *c…
+ 3 Botanic Gardens 15/2/20  Magpie           1 (didn't see it… *Magpie*         
+ 4 LBG             7-12-19  Magpie-lark      4                 *Magpie*-*lark*  
+ 5 Mt  Ainslie     16/2/20  Gang Gang cocka… 2                 *Gang* *Gang* *c…
+ 6 Ainslie Oval    Last Su… Sulphur-crested… Eight             *Sulphur*-*crest…
+ 7 Lake Burley   … 14/12/19 Crimson Rosella  4                 *Crimson* *Rosel…
+ 8 Lake Burley Gr… 8/2/20   Gang gang cocka… 9                 *Gang* *gang* *c…
+ 9 Mt. Majura      23/2/20  Magpie lark      12                *Magpie* *lark*  
+10 Downer Oval     18/11/19 King-Parrot      6                 *King*-*Parrot*  
+~~~
+{: .output}
+
+As before, multiple matches can be referenced with increasing numbers.
+
+
+~~~
+birds %>% 
+  mutate(first_last = str_replace(species, "^(\\w).+(\\w)$", "First: \\1, Last: \\2"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location         date      species          count               first_last   
+   <chr>            <chr>     <chr>            <chr>               <chr>        
+ 1 Mount. Ainslie   21/12/19  Magpie           10                  First: M, La…
+ 2 Black Mtn        09/02/20… Gang-gang cocka… 2                   First: G, La…
+ 3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, … First: M, La…
+ 4 LBG              7-12-19   Magpie-lark      4                   First: M, La…
+ 5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   First: G, La…
+ 6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               First: S, La…
+ 7 Lake Burley   G… 14/12/19  Crimson Rosella  4                   First: C, La…
+ 8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   First: G, La…
+ 9 Mt. Majura       23/2/20   Magpie lark      12                  First: M, La…
+10 Downer Oval      18/11/19  King-Parrot      6                   First: K, La…
+~~~
+{: .output}
+
+Note that the entire matched pattern gets replaced. In the example above, because we matched the whole
+line with `.+` the entire line is replaced. If we wanted to keep that part of the text we would need
+to capture it as well with grouping brackets.
+
+
+~~~
+birds %>% 
+  mutate(first_last = str_replace(species, "^(\\w)(.+)(\\w)$", "First: \\1, Last: \\3, Rest: \\2"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location      date     species        count          first_last              
+   <chr>         <chr>    <chr>          <chr>          <chr>                   
+ 1 Mount. Ainsl… 21/12/19 Magpie         10             First: M, Last: e, Rest…
+ 2 Black Mtn     09/02/2… Gang-gang coc… 2              First: G, Last: o, Rest…
+ 3 Botanic Gard… 15/2/20  Magpie         1 (didn't see… First: M, Last: e, Rest…
+ 4 LBG           7-12-19  Magpie-lark    4              First: M, Last: k, Rest…
+ 5 Mt  Ainslie   16/2/20  Gang Gang coc… 2              First: G, Last: o, Rest…
+ 6 Ainslie Oval  Last Su… Sulphur-crest… Eight          First: S, Last: o, Rest…
+ 7 Lake Burley … 14/12/19 Crimson Rosel… 4              First: C, Last: a, Rest…
+ 8 Lake Burley … 8/2/20   Gang gang coc… 9              First: G, Last: o, Rest…
+ 9 Mt. Majura    23/2/20  Magpie lark    12             First: M, Last: k, Rest…
+10 Downer Oval   18/11/19 King-Parrot    6              First: K, Last: t, Rest…
+~~~
+{: .output}
+
+> ## Complex replacements
+> Using backreferences:
+>
+> 1. Double each vowel in the `location` column
+> 2. Convert all dates in the `date` column to have four digit year values
+> 3. Replace the middle letters of each word in the `species` column with two underscores. For example,
+> `Crimson Rosella` should become `C__n R__a`
+> 4. Print the first and last *word* of each `species` using the template "First: <word>, Last: <word>"
+> (Tip: if you are having trouble, try including the boundary pattern -- `\b`)
+{: .challenge}
+
+## Constructing a substitution
+
+There are a few tips about the process that can help when trying to create a regex substution
+pattern. We will demonstrate it with an example of wanting to change the date column from "day/month/year"
+to "year:month:day (old: day/month/year)"
+
+1. Start by copying a real example of a whole string to match as your pattern
+
+*Pattern*: `21/12/19`
+
+2. Add any escape backslashes necessary of your text contains regex special symbols (not needed in this
+example)
+
+*Pattern*: `21/12/19`
+
+3. Circle the parts of the string you’d like to separately retain, with round brackets.
+
+*Pattern*: `((21)/(12)/(19))`
+
+4. Write out your replacement pattern, using backreferences to what you circled.
+
+*Pattern*: `((21)/(12)/(19))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+
+5. At this stage, the substitution should work, but only for the specific real example string that you’ve started with. Test it to make sure.
+
+
+~~~
+birds %>% 
+  mutate(test_replace = str_replace(date, "((21)/(12)/(19))", "\\4:\\3:\\2 (old: \\1)"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location        date     species          count             test_replace     
+   <chr>           <chr>    <chr>            <chr>             <chr>            
+ 1 Mount. Ainslie  21/12/19 Magpie           10                19:12:21 (old: 2…
+ 2 Black Mtn       09/02/2… Gang-gang cocka… 2                 09/02/2020       
+ 3 Botanic Gardens 15/2/20  Magpie           1 (didn't see it… 15/2/20          
+ 4 LBG             7-12-19  Magpie-lark      4                 7-12-19          
+ 5 Mt  Ainslie     16/2/20  Gang Gang cocka… 2                 16/2/20          
+ 6 Ainslie Oval    Last Su… Sulphur-crested… Eight             Last Sunday      
+ 7 Lake Burley   … 14/12/19 Crimson Rosella  4                 14/12/19         
+ 8 Lake Burley Gr… 8/2/20   Gang gang cocka… 9                 8/2/20           
+ 9 Mt. Majura      23/2/20  Magpie lark      12                23/2/20          
+10 Downer Oval     18/11/19 King-Parrot      6                 18/11/19         
+~~~
+{: .output}
+
+6. Finally, start abstracting your search pattern, replacing parts of your example string with wild-cards or character-classes as needed, to strike the balance between specificity and ambiguity required to match all that you want and not all that you don’t want.
+
+You may need to test your abstracted pattern often to make sure you are matching the right text. There
+will often be multiple regex patterns that match the 'correct' text. Your future self will thank you
+if you can come up with a pattern that is easier to read.
+
+Using digit/non-digit distinction as a 'simple' solution:
+*Pattern*: `((\\d+)\\D(\\d+)\\D(\\d+))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+
+
+~~~
+birds %>% 
+  mutate(changed_date = str_replace(date, "((\\d+)\\D(\\d+)\\D(\\d+))", "\\4:\\3:\\2 (old: \\1)"))
+~~~
+{: .language-r}
+
+
+
+~~~
+# A tibble: 10 x 5
+   location       date     species         count             changed_date       
+   <chr>          <chr>    <chr>           <chr>             <chr>              
+ 1 Mount. Ainslie 21/12/19 Magpie          10                19:12:21 (old: 21/…
+ 2 Black Mtn      09/02/2… Gang-gang cock… 2                 2020:02:09 (old: 0…
+ 3 Botanic Garde… 15/2/20  Magpie          1 (didn't see it… 20:2:15 (old: 15/2…
+ 4 LBG            7-12-19  Magpie-lark     4                 19:12:7 (old: 7-12…
+ 5 Mt  Ainslie    16/2/20  Gang Gang cock… 2                 20:2:16 (old: 16/2…
+ 6 Ainslie Oval   Last Su… Sulphur-creste… Eight             Last Sunday        
+ 7 Lake Burley  … 14/12/19 Crimson Rosella 4                 19:12:14 (old: 14/…
+ 8 Lake Burley G… 8/2/20   Gang gang cock… 9                 20:2:8 (old: 8/2/2…
+ 9 Mt. Majura     23/2/20  Magpie lark     12                20:2:23 (old: 23/2…
+10 Downer Oval    18/11/19 King-Parrot     6                 19:11:18 (old: 18/…
+~~~
+{: .output}
+
+Can get more specific, for example adding error checking using number of digits. But you trade off 
+accuracy of matching for complexity, so consider how complex a pattern needs to be to match the sort
+of data you are likely to receive.
+
+*Pattern*: `((\\d{1,2})\\D(\\d{1,2})\\D(\\d{2}|\\d{4}))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+
+> ## Putting it together
+> Create a cleaned version of the birds data called `clean_birds`. You will need to use multiple steps
+> and the regex functions `str_extract()`, `str_replace()`, and `str_remove()` (or their `XXXX_all()`
+> variants).
+>
+> A cleaned data frame should have:
+>
+> * Consistent naming for the `location` and `species` column so that each location/species has only
+> a single way of being recorded
+> * A consistent format for the `date`column 
+> * Additional information from the `count` column put in a new column called `notes`
+> * Only numeric values in the `count` column
+> * Any other problems you noticed in the 
+> [first challenge](../01-messy-data/index.html#bird-sightings-in-canberra) that have not otherwise
+> been fixed
+{: .challenge}

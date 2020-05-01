@@ -43,7 +43,7 @@ birds
  4 LBG                 7-12-19    Magpie-lark          4                        
  5 Mt  Ainslie         16/2/20    Gang Gang cockatoo   2                        
  6 Ainslie Oval        Last Sund… Sulphur-crested coc… Eight                    
- 7 Lake Burley   Grif… 14/12/19   Crimson Rosella      4                        
+ 7 Lake Burley   Grif… 14-12-19   Crimson Rosella      4                        
  8 Lake Burley Griffin 8/2/20     Gang gang cockatoo   9                        
  9 Mt. Majura          23/2/20    Magpie lark          12                       
 10 Downer Oval         18/11/19   King-Parrot          6                        
@@ -76,7 +76,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark      4                    FALSE       
  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                    FALSE       
  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight                FALSE       
- 7 Lake Burley   G… 14/12/19  Crimson Rosella  4                    TRUE        
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella  4                    TRUE        
  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                    FALSE       
  9 Mt. Majura       23/2/20   Magpie lark      12                   FALSE       
 10 Downer Oval      18/11/19  King-Parrot      6                    TRUE        
@@ -104,7 +104,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark      4                    TRUE        
  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                    FALSE       
  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight                FALSE       
- 7 Lake Burley   G… 14/12/19  Crimson Rosella  4                    TRUE        
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella  4                    TRUE        
  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                    FALSE       
  9 Mt. Majura       23/2/20   Magpie lark      12                   TRUE        
 10 Downer Oval      18/11/19  King-Parrot      6                    TRUE        
@@ -141,7 +141,7 @@ birds %>%
  4 LBG               7-12-19   Magpie-lark        4                      FALSE  
  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                      TRUE   
  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                  TRUE   
- 7 Lake Burley   Gr… 14/12/19  Crimson Rosella    4                      TRUE   
+ 7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                      TRUE   
  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                      TRUE   
  9 Mt. Majura        23/2/20   Magpie lark        12                     FALSE  
 10 Downer Oval       18/11/19  King-Parrot        6                      FALSE  
@@ -169,7 +169,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark      4                   FALSE        
  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   FALSE        
  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               FALSE        
- 7 Lake Burley   G… 14/12/19  Crimson Rosella  4                   FALSE        
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella  4                   FALSE        
  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   FALSE        
  9 Mt. Majura       23/2/20   Magpie lark      12                  TRUE         
 10 Downer Oval      18/11/19  King-Parrot      6                   FALSE        
@@ -198,7 +198,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark       4                    FALSE      
  5 Mt  Ainslie      16/2/20   Gang Gang cockat… 2                    FALSE      
  6 Ainslie Oval     Last Sun… Sulphur-crested … Eight                TRUE       
- 7 Lake Burley   G… 14/12/19  Crimson Rosella   4                    FALSE      
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella   4                    FALSE      
  8 Lake Burley Gri… 8/2/20    Gang gang cockat… 9                    FALSE      
  9 Mt. Majura       23/2/20   Magpie lark       12                   FALSE      
 10 Downer Oval      18/11/19  King-Parrot       6                    FALSE      
@@ -218,7 +218,128 @@ birds %>%
 >
 > Then apply the second regex pattern to the `location` column, the third regex pattern to the 
 > `count` column and the fourth pattern to the `date` column.
+>
+> > ## Solution
+> > 
+> > 1. `Magpie|cockatoo`
+> > 2. `[iou]`
+> > 3. `[A-Z]`
+> > 4. `[^3-5]`
+> > 
+> > Used in code:
+> > 
+> > ~~~
+> > # Text containing either Magpie or cockatoo in the species column
+> > birds %>% 
+> >     mutate(can_detect = str_detect(species, "Magpie|cockatoo"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species            count                can_detect
+> >    <chr>            <chr>     <chr>              <chr>                <lgl>     
+> >  1 Mount. Ainslie   21/12/19  Magpie             10                   TRUE      
+> >  2 Black Mtn        09/02/20… Gang-gang cockatoo 2                    TRUE      
+> >  3 Botanic Gardens  15/2/20   Magpie             1 (didn't see it, b… TRUE      
+> >  4 LBG              7-12-19   Magpie-lark        4                    TRUE      
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    TRUE      
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                TRUE      
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    FALSE     
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    TRUE      
+> >  9 Mt. Majura       23/2/20   Magpie lark        12                   TRUE      
+> > 10 Downer Oval      18/11/19  King-Parrot        6                    FALSE     
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Text with either an i, o or u character in the location column
+> > birds %>% 
+> >     mutate(can_detect = str_detect(location, "[iou]"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species            count                can_detect
+> >    <chr>            <chr>     <chr>              <chr>                <lgl>     
+> >  1 Mount. Ainslie   21/12/19  Magpie             10                   TRUE      
+> >  2 Black Mtn        09/02/20… Gang-gang cockatoo 2                    FALSE     
+> >  3 Botanic Gardens  15/2/20   Magpie             1 (didn't see it, b… TRUE      
+> >  4 LBG              7-12-19   Magpie-lark        4                    FALSE     
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    TRUE      
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                TRUE      
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    TRUE      
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    TRUE      
+> >  9 Mt. Majura       23/2/20   Magpie lark        12                   TRUE      
+> > 10 Downer Oval      18/11/19  King-Parrot        6                    TRUE      
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Any uppercase text character in the count column
+> > birds %>% 
+> >     mutate(can_detect = str_detect(count, "[A-Z]"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species            count                can_detect
+> >    <chr>            <chr>     <chr>              <chr>                <lgl>     
+> >  1 Mount. Ainslie   21/12/19  Magpie             10                   FALSE     
+> >  2 Black Mtn        09/02/20… Gang-gang cockatoo 2                    FALSE     
+> >  3 Botanic Gardens  15/2/20   Magpie             1 (didn't see it, b… FALSE     
+> >  4 LBG              7-12-19   Magpie-lark        4                    FALSE     
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    FALSE     
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                TRUE      
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    FALSE     
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    FALSE     
+> >  9 Mt. Majura       23/2/20   Magpie lark        12                   FALSE     
+> > 10 Downer Oval      18/11/19  King-Parrot        6                    FALSE     
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Any character except for 3, 4, or 5 in the date column
+> > birds %>% 
+> >     mutate(can_detect = str_detect(date, "[^3-5]"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species            count                can_detect
+> >    <chr>            <chr>     <chr>              <chr>                <lgl>     
+> >  1 Mount. Ainslie   21/12/19  Magpie             10                   TRUE      
+> >  2 Black Mtn        09/02/20… Gang-gang cockatoo 2                    TRUE      
+> >  3 Botanic Gardens  15/2/20   Magpie             1 (didn't see it, b… TRUE      
+> >  4 LBG              7-12-19   Magpie-lark        4                    TRUE      
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    TRUE      
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                TRUE      
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    TRUE      
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    TRUE      
+> >  9 Mt. Majura       23/2/20   Magpie lark        12                   TRUE      
+> > 10 Downer Oval      18/11/19  King-Parrot        6                    TRUE      
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
+
 
 ## Grouping and anchoring
 
@@ -249,7 +370,7 @@ birds %>%
  4 LBG                7-12-19   Magpie-lark        4                       TRUE 
  5 Mt  Ainslie        16/2/20   Gang Gang cockatoo 2                       FALSE
  6 Ainslie Oval       Last Sun… Sulphur-crested c… Eight                   FALSE
- 7 Lake Burley   Gri… 14/12/19  Crimson Rosella    4                       TRUE 
+ 7 Lake Burley   Gri… 14-12-19  Crimson Rosella    4                       TRUE 
  8 Lake Burley Griff… 8/2/20    Gang gang cockatoo 9                       TRUE 
  9 Mt. Majura         23/2/20   Magpie lark        12                      FALSE
 10 Downer Oval        18/11/19  King-Parrot        6                       FALSE
@@ -276,7 +397,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark        4                    FALSE     
  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    FALSE     
  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                FALSE     
- 7 Lake Burley   G… 14/12/19  Crimson Rosella    4                    FALSE     
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    FALSE     
  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    TRUE      
  9 Mt. Majura       23/2/20   Magpie lark        12                   FALSE     
 10 Downer Oval      18/11/19  King-Parrot        6                    FALSE     
@@ -290,6 +411,13 @@ brackets is captured and can be reused.
 > Using `Gang( |-)gang` as a regex pattern works for rows two and eight, but fails to match the 
 > fifth row of the birds data (with "Gang Gang cockatoo"). Edit this pattern to detect all 
 > three rows.
+> > ## Solution
+> > Lots of ways to do this. Could either include all three options within the grouping (`Gang( G| g|-g)ang`)
+> > or add a second grouping (`Gang( |-)(G|g)ang`).
+> > 
+> > If using that second grouping, we can simplify things a little but by using by using square brackets:
+> > `Gang[ -][Gg]ang`
+> {: .solution}
 {: .challenge}
 
 The patterns can also be 'anchored' to specific parts of the text string being searched. This allows
@@ -318,7 +446,7 @@ birds %>%
  4 LBG               7-12-19   Magpie-lark        4                      FALSE  
  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                      TRUE   
  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                  TRUE   
- 7 Lake Burley   Gr… 14/12/19  Crimson Rosella    4                      FALSE  
+ 7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                      FALSE  
  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                      FALSE  
  9 Mt. Majura        23/2/20   Magpie lark        12                     FALSE  
 10 Downer Oval       18/11/19  King-Parrot        6                      FALSE  
@@ -346,7 +474,7 @@ birds %>%
  4 LBG              7-12-19  Magpie-lark      4                   FALSE         
  5 Mt  Ainslie      16/2/20  Gang Gang cocka… 2                   FALSE         
  6 Ainslie Oval     Last Su… Sulphur-crested… Eight               TRUE          
- 7 Lake Burley   G… 14/12/19 Crimson Rosella  4                   FALSE         
+ 7 Lake Burley   G… 14-12-19 Crimson Rosella  4                   FALSE         
  8 Lake Burley Gri… 8/2/20   Gang gang cocka… 9                   FALSE         
  9 Mt. Majura       23/2/20  Magpie lark      12                  FALSE         
 10 Downer Oval      18/11/19 King-Parrot      6                   FALSE         
@@ -374,7 +502,7 @@ birds %>%
  4 LBG                7-12-19   Magpie-lark        4                       FALSE
  5 Mt  Ainslie        16/2/20   Gang Gang cockatoo 2                       TRUE 
  6 Ainslie Oval       Last Sun… Sulphur-crested c… Eight                   TRUE 
- 7 Lake Burley   Gri… 14/12/19  Crimson Rosella    4                       TRUE 
+ 7 Lake Burley   Gri… 14-12-19  Crimson Rosella    4                       TRUE 
  8 Lake Burley Griff… 8/2/20    Gang gang cockatoo 9                       TRUE 
  9 Mt. Majura         23/2/20   Magpie lark        12                      FALSE
 10 Downer Oval        18/11/19  King-Parrot        6                       TRUE 
@@ -402,7 +530,7 @@ birds %>%
  4 LBG               7-12-19    Magpie-lark        4                      FALSE 
  5 Mt  Ainslie       16/2/20    Gang Gang cockatoo 2                      TRUE  
  6 Ainslie Oval      Last Sund… Sulphur-crested c… Eight                  TRUE  
- 7 Lake Burley   Gr… 14/12/19   Crimson Rosella    4                      FALSE 
+ 7 Lake Burley   Gr… 14-12-19   Crimson Rosella    4                      FALSE 
  8 Lake Burley Grif… 8/2/20     Gang gang cockatoo 9                      TRUE  
  9 Mt. Majura        23/2/20    Magpie lark        12                     FALSE 
 10 Downer Oval       18/11/19   King-Parrot        6                      FALSE 
@@ -414,7 +542,65 @@ birds %>%
 > `location` column using `str_detect()`.
 > 
 > Modify your pattern above with an anchoring to exclude 'Black Mtn' from the matched values.
+> 
+> > ## Solution
+> > 
+> > ~~~
+> > # All mountains
+> > birds %>% 
+> >     mutate(all_mtn = str_detect(location, "M(ount|t|tn)"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location          date      species            count                  all_mtn
+> >    <chr>             <chr>     <chr>              <chr>                  <lgl>  
+> >  1 Mount. Ainslie    21/12/19  Magpie             10                     TRUE   
+> >  2 Black Mtn         09/02/20… Gang-gang cockatoo 2                      TRUE   
+> >  3 Botanic Gardens   15/2/20   Magpie             1 (didn't see it, but… FALSE  
+> >  4 LBG               7-12-19   Magpie-lark        4                      FALSE  
+> >  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                      TRUE   
+> >  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                  FALSE  
+> >  7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                      FALSE  
+> >  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                      FALSE  
+> >  9 Mt. Majura        23/2/20   Magpie lark        12                     TRUE   
+> > 10 Downer Oval       18/11/19  King-Parrot        6                      FALSE  
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Exclude Black Mountain - anchor match to start of line with ^
+> > birds %>% 
+> >     mutate(no_BlkMtn = str_detect(location, "^M(ount|t|tn)"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location          date      species           count                 no_BlkMtn
+> >    <chr>             <chr>     <chr>             <chr>                 <lgl>    
+> >  1 Mount. Ainslie    21/12/19  Magpie            10                    TRUE     
+> >  2 Black Mtn         09/02/20… Gang-gang cockat… 2                     FALSE    
+> >  3 Botanic Gardens   15/2/20   Magpie            1 (didn't see it, bu… FALSE    
+> >  4 LBG               7-12-19   Magpie-lark       4                     FALSE    
+> >  5 Mt  Ainslie       16/2/20   Gang Gang cockat… 2                     TRUE     
+> >  6 Ainslie Oval      Last Sun… Sulphur-crested … Eight                 FALSE    
+> >  7 Lake Burley   Gr… 14-12-19  Crimson Rosella   4                     FALSE    
+> >  8 Lake Burley Grif… 8/2/20    Gang gang cockat… 9                     FALSE    
+> >  9 Mt. Majura        23/2/20   Magpie lark       12                    TRUE     
+> > 10 Downer Oval       18/11/19  King-Parrot       6                     FALSE    
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
+
 
 ## Quantifying matches
 
@@ -445,7 +631,7 @@ birds %>%
  4 LBG               7-12-19   Magpie-lark        4                     FALSE   
  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                     TRUE    
  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                 TRUE    
- 7 Lake Burley   Gr… 14/12/19  Crimson Rosella    4                     FALSE   
+ 7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                     FALSE   
  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                     TRUE    
  9 Mt. Majura        23/2/20   Magpie lark        12                    FALSE   
 10 Downer Oval       18/11/19  King-Parrot        6                     FALSE   
@@ -480,7 +666,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark       4                    TRUE       
  5 Mt  Ainslie      16/2/20   Gang Gang cockat… 2                    TRUE       
  6 Ainslie Oval     Last Sun… Sulphur-crested … Eight                TRUE       
- 7 Lake Burley   G… 14/12/19  Crimson Rosella   4                    TRUE       
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella   4                    TRUE       
  8 Lake Burley Gri… 8/2/20    Gang gang cockat… 9                    TRUE       
  9 Mt. Majura       23/2/20   Magpie lark       12                   TRUE       
 10 Downer Oval      18/11/19  King-Parrot       6                    TRUE       
@@ -508,7 +694,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark       4                    ag         
  5 Mt  Ainslie      16/2/20   Gang Gang cockat… 2                    an         
  6 Ainslie Oval     Last Sun… Sulphur-crested … Eight                ul         
- 7 Lake Burley   G… 14/12/19  Crimson Rosella   4                    ri         
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella   4                    ri         
  8 Lake Burley Gri… 8/2/20    Gang gang cockat… 9                    an         
  9 Mt. Majura       23/2/20   Magpie lark       12                   ag         
 10 Downer Oval      18/11/19  King-Parrot       6                    in         
@@ -537,7 +723,7 @@ birds %>%
  4 LBG             7-12-19  Magpie-lark      4                  <NA>            
  5 Mt  Ainslie     16/2/20  Gang Gang cocka… 2                  <NA>            
  6 Ainslie Oval    Last Su… Sulphur-crested… Eight              <NA>            
- 7 Lake Burley   … 14/12/19 Crimson Rosella  4                 "Lake "          
+ 7 Lake Burley   … 14-12-19 Crimson Rosella  4                 "Lake "          
  8 Lake Burley Gr… 8/2/20   Gang gang cocka… 9                 "Lake "          
  9 Mt. Majura      23/2/20  Magpie lark      12                 <NA>            
 10 Downer Oval     18/11/19 King-Parrot      6                 "Downer "        
@@ -570,7 +756,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark        4                    <NA>      
  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    Mt        
  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                <NA>      
- 7 Lake Burley   G… 14/12/19  Crimson Rosella    4                    <NA>      
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    <NA>      
  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    <NA>      
  9 Mt. Majura       23/2/20   Magpie lark        12                   Mt        
 10 Downer Oval      18/11/19  King-Parrot        6                    <NA>      
@@ -598,7 +784,7 @@ birds %>%
  4 LBG               7-12-19   Magpie-lark        4                     <NA>    
  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                     Mt      
  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                 <NA>    
- 7 Lake Burley   Gr… 14/12/19  Crimson Rosella    4                     <NA>    
+ 7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                     <NA>    
  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                     <NA>    
  9 Mt. Majura        23/2/20   Magpie lark        12                    Mt      
 10 Downer Oval       18/11/19  King-Parrot        6                     <NA>    
@@ -629,7 +815,7 @@ birds %>%
  4 LBG             7-12-19   Magpie-lark      4                  Magpie-lark    
  5 Mt  Ainslie     16/2/20   Gang Gang cocka… 2                  Gang Gang cock…
  6 Ainslie Oval    Last Sun… Sulphur-crested… Eight              Sulphur-creste…
- 7 Lake Burley   … 14/12/19  Crimson Rosella  4                  Crimson Rosella
+ 7 Lake Burley   … 14-12-19  Crimson Rosella  4                  Crimson Rosella
  8 Lake Burley Gr… 8/2/20    Gang gang cocka… 9                  Gang gang cock…
  9 Mt. Majura      23/2/20   Magpie lark      12                 Magpie lark    
 10 Downer Oval     18/11/19  King-Parrot      6                  King-Parrot    
@@ -658,7 +844,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark        4                     <NA>     
  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    "Gang "   
  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                 <NA>     
- 7 Lake Burley   G… 14/12/19  Crimson Rosella    4                     <NA>     
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella    4                     <NA>     
  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    "Gang "   
  9 Mt. Majura       23/2/20   Magpie lark        12                    <NA>     
 10 Downer Oval      18/11/19  King-Parrot        6                     <NA>     
@@ -686,7 +872,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark       4                     <NA>      
  5 Mt  Ainslie      16/2/20   Gang Gang cockat… 2                    "Gang Gang…
  6 Ainslie Oval     Last Sun… Sulphur-crested … Eight                 <NA>      
- 7 Lake Burley   G… 14/12/19  Crimson Rosella   4                     <NA>      
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella   4                     <NA>      
  8 Lake Burley Gri… 8/2/20    Gang gang cockat… 9                    "Gang gang…
  9 Mt. Majura       23/2/20   Magpie lark       12                    <NA>      
 10 Downer Oval      18/11/19  King-Parrot       6                     <NA>      
@@ -698,4 +884,98 @@ birds %>%
 > match values in the `date` column that start with *two* digits, followed by a separator (`/` or `-`).
 > 
 > Can you modify this pattern so that it matches dates with two digits for the day, month, and year?
+> 
+> > ## Solution
+> > For a digit, we can use the range `[0-9]`. For the separators, we can use `[/-]`. Then we need
+> > to make sure we are quantifying and anchoring everything correctly -- `^[0-9]{2}[/-]`.
+> > 
+> > ~~~
+> > birds %>% 
+> >     mutate(two_digits = str_extract(date, "^[0-9]{2}[/-]"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species            count                two_digits
+> >    <chr>            <chr>     <chr>              <chr>                <chr>     
+> >  1 Mount. Ainslie   21/12/19  Magpie             10                   21/       
+> >  2 Black Mtn        09/02/20… Gang-gang cockatoo 2                    09/       
+> >  3 Botanic Gardens  15/2/20   Magpie             1 (didn't see it, b… 15/       
+> >  4 LBG              7-12-19   Magpie-lark        4                    <NA>      
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    16/       
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                <NA>      
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    14-       
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    <NA>      
+> >  9 Mt. Majura       23/2/20   Magpie lark        12                   23/       
+> > 10 Downer Oval      18/11/19  King-Parrot        6                    18/       
+> > ~~~
+> > {: .output}
+> > To match two digits for the day, month, and year, we can extend our pattern explicitly
+> > -- `^[0-9]{2}[/-][0-9]{2}[/-][0-9]{2}$`. This pattern reads "Match the start of a line, then two
+> > digits, then a separator, then two digits, then a separator, then two digits, then the end of a
+> > line". 
+> > 
+> > Alternatively we can group our two digits and separator pattern together with `()` and then 
+> > quantify that pattern -- `^([0-9]{2}[/-]?){3}$`. Note that we had to use a `?` to match 0-1 separator
+> > characters because there is no separator after the year digits. This pattern can be read as 
+> > "Match the start of a line, then three repeats of two digits and an optional separator, then the 
+> > end of a line".
+> > 
+> > Both of these patterns match the same text.
+> > 
+> > ~~~
+> > birds %>% 
+> >     mutate(dd_mm_yy = str_extract(date, "^[0-9]{2}[/-][0-9]{2}[/-][0-9]{2}$"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location          date      species            count                 dd_mm_yy
+> >    <chr>             <chr>     <chr>              <chr>                 <chr>   
+> >  1 Mount. Ainslie    21/12/19  Magpie             10                    21/12/19
+> >  2 Black Mtn         09/02/20… Gang-gang cockatoo 2                     <NA>    
+> >  3 Botanic Gardens   15/2/20   Magpie             1 (didn't see it, bu… <NA>    
+> >  4 LBG               7-12-19   Magpie-lark        4                     <NA>    
+> >  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                     <NA>    
+> >  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                 <NA>    
+> >  7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                     14-12-19
+> >  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                     <NA>    
+> >  9 Mt. Majura        23/2/20   Magpie lark        12                    <NA>    
+> > 10 Downer Oval       18/11/19  King-Parrot        6                     18/11/19
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > birds %>% 
+> >     mutate(dd_mm_yy = str_extract(date, "^([0-9]{2}[/-]?){3}$"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location          date      species            count                 dd_mm_yy
+> >    <chr>             <chr>     <chr>              <chr>                 <chr>   
+> >  1 Mount. Ainslie    21/12/19  Magpie             10                    21/12/19
+> >  2 Black Mtn         09/02/20… Gang-gang cockatoo 2                     <NA>    
+> >  3 Botanic Gardens   15/2/20   Magpie             1 (didn't see it, bu… <NA>    
+> >  4 LBG               7-12-19   Magpie-lark        4                     <NA>    
+> >  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                     <NA>    
+> >  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                 <NA>    
+> >  7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                     14-12-19
+> >  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                     <NA>    
+> >  9 Mt. Majura        23/2/20   Magpie lark        12                    <NA>    
+> > 10 Downer Oval       18/11/19  King-Parrot        6                     18/11/19
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}

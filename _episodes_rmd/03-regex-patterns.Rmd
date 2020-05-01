@@ -89,7 +89,35 @@ birds %>%
 >
 > Then apply the second regex pattern to the `location` column, the third regex pattern to the 
 > `count` column and the fourth pattern to the `date` column.
+>
+> > ## Solution
+> > 
+> > 1. `Magpie|cockatoo`
+> > 2. `[iou]`
+> > 3. `[A-Z]`
+> > 4. `[^3-5]`
+> > 
+> > Used in code:
+> > ```{r alternate-matches}
+> > # Text containing either Magpie or cockatoo in the species column
+> > birds %>% 
+> >     mutate(can_detect = str_detect(species, "Magpie|cockatoo"))
+> >
+> > # Text with either an i, o or u character in the location column
+> > birds %>% 
+> >     mutate(can_detect = str_detect(location, "[iou]"))
+> >
+> > # Any uppercase text character in the count column
+> > birds %>% 
+> >     mutate(can_detect = str_detect(count, "[A-Z]"))
+> > 
+> > # Any character except for 3, 4, or 5 in the date column
+> > birds %>% 
+> >     mutate(can_detect = str_detect(date, "[^3-5]"))
+> > ```
+> {: .solution}
 {: .challenge}
+
 
 ## Grouping and anchoring
 
@@ -116,6 +144,13 @@ brackets is captured and can be reused.
 > Using `Gang( |-)gang` as a regex pattern works for rows two and eight, but fails to match the 
 > fifth row of the birds data (with "Gang Gang cockatoo"). Edit this pattern to detect all 
 > three rows.
+> > ## Solution
+> > Lots of ways to do this. Could either include all three options within the grouping (`Gang( G| g|-g)ang`)
+> > or add a second grouping (`Gang( |-)(G|g)ang`).
+> > 
+> > If using that second grouping, we can simplify things a little but by using by using square brackets:
+> > `Gang[ -][Gg]ang`
+> {: .solution}
 {: .challenge}
 
 The patterns can also be 'anchored' to specific parts of the text string being searched. This allows
@@ -147,7 +182,20 @@ birds %>%
 > `location` column using `str_detect()`.
 > 
 > Modify your pattern above with an anchoring to exclude 'Black Mtn' from the matched values.
+> 
+> > ## Solution
+> > ```{r}
+> > # All mountains
+> > birds %>% 
+> >     mutate(all_mtn = str_detect(location, "M(ount|t|tn)"))
+> > 
+> > # Exclude Black Mountain - anchor match to start of line with ^
+> > birds %>% 
+> >     mutate(no_BlkMtn = str_detect(location, "^M(ount|t|tn)"))
+> > ```
+> {: .solution}
 {: .challenge}
+
 
 ## Quantifying matches
 
@@ -233,4 +281,32 @@ birds %>%
 > match values in the `date` column that start with *two* digits, followed by a separator (`/` or `-`).
 > 
 > Can you modify this pattern so that it matches dates with two digits for the day, month, and year?
+> 
+> > ## Solution
+> > For a digit, we can use the range `[0-9]`. For the separators, we can use `[/-]`. Then we need
+> > to make sure we are quantifying and anchoring everything correctly -- `^[0-9]{2}[/-]`.
+> > ```{r date-quantifiers}
+> > birds %>% 
+> >     mutate(two_digits = str_extract(date, "^[0-9]{2}[/-]"))
+> > ```
+> > To match two digits for the day, month, and year, we can extend our pattern explicitly
+> > -- `^[0-9]{2}[/-][0-9]{2}[/-][0-9]{2}$`. This pattern reads "Match the start of a line, then two
+> > digits, then a separator, then two digits, then a separator, then two digits, then the end of a
+> > line". 
+> > 
+> > Alternatively we can group our two digits and separator pattern together with `()` and then 
+> > quantify that pattern -- `^([0-9]{2}[/-]?){3}$`. Note that we had to use a `?` to match 0-1 separator
+> > characters because there is no separator after the year digits. This pattern can be read as 
+> > "Match the start of a line, then three repeats of two digits and an optional separator, then the 
+> > end of a line".
+> > 
+> > Both of these patterns match the same text.
+> > ```{r tricky-dates}
+> > birds %>% 
+> >     mutate(dd_mm_yy = str_extract(date, "^[0-9]{2}[/-][0-9]{2}[/-][0-9]{2}$"))
+> >
+> > birds %>% 
+> >     mutate(dd_mm_yy = str_extract(date, "^([0-9]{2}[/-]?){3}$"))
+> > ```
+> {: .solution}
 {: .challenge}

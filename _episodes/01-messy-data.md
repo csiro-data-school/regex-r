@@ -81,5 +81,13 @@ can identify other dates in text even if they are not exactly the same.
 > 1. "Thursday" and "Tuesday"
 > 2. "sunday" and "birthday"
 > 3. "Anzac Day" and "Christmas Day"
+>
+> > ## Solution
+> > A possible solution:
+> > 
+> > 1. Items starting with "T"
+> > 2. Items starting with a lower case letter
+> > 3. Items with a space
+> {: .solution}
 {: .challenge}
 

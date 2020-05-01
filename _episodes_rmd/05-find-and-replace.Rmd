@@ -58,9 +58,24 @@ birds %>%
 > ## Replace once
 > Using `str_replace()` and the birds data:
 >
-> 1. Replace the "Eight" in the `count` column with the digit "8"
+> 1. Replace the "Eight" in the `count` column with the character "8"
 > 2. Replace all hyphens ("-") in the `species` column with spaces (" ")
 > 3. Replace the digits for the year in the `date` column with the text "Year"
+> > ## Solution
+> > ``` {r replacing}
+> > # Replace the "Eight" in the count column with the character "8"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace(count, "Eight", "8"))
+> > 
+> > # Replace all hyphens in the species column with spaces
+> > birds %>% 
+> >     mutate(replaced_data = str_replace(species, "-", " "))
+> > 
+> > # Replace the digits for the year in the date column with the text "Year"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace(date, "\\d+$", "Year"))
+> > ```
+> {: .solution}
 {: .challenge}
 
 ## Replace more than once
@@ -96,6 +111,25 @@ birds %>%
 > 2. Replace any word seven letters or longer in the `species` column with the text "long"
 > 3. Delete any non-numeric characters from the `count` column
 > 4. Create an `abbreviation` column containing just the uppercase letters from the `location` column
+> > ## Solution
+> > ``` {r replacing-more}
+> > # Replace each word in the location column with the text "word"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(location, "\\w+", "word"))
+> > 
+> > # Replace any word seven letters or longer in the species column with the text "long"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(species, "\\w{7,}", "long"))
+> > 
+> > # Delete any non-numeric characters from the count column
+> > birds %>% 
+> >     mutate(replaced_data = str_remove_all(count, "\\D"))
+> >
+> > # Create an abbreviation column containing just the uppercase letters from the location column
+> > birds %>% 
+> >     mutate(abbreviation = str_remove_all(location, "[^A-Z]"))
+> > ```
+> {: .solution}
 {: .challenge}
 
 ## Use match in replacement
@@ -136,6 +170,25 @@ birds %>%
 > `Crimson Rosella` should become `C__n R__a`
 > 4. Print the first and last *word* of each `species` using the template "First: <word>, Last: <word>"
 > (Tip: if you are having trouble, try including the boundary pattern -- `\b`)
+> > ## Solution
+> > ``` {r replacing-backreferences}
+> > # Double each vowel in the location column
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(location, "([aeiou])", "\\1\\1"))
+> > 
+> > # Convert all dates in the date column to have four digit year values
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(date, "\\b(\\d{2})$", "20\\1"))
+> > 
+> > # Replace the middle letters of each word in the species column with two underscores
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(species, "(\\w)\\w+(\\w)", "\\1__\\2"))
+> >
+> > # Print the first and last *word* of each location using the template "First: <word>, Last: <word>"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(species, "^(\\w+).+\\b(\\w+)$", "First: \\1, Last: \\2"))
+> > ```
+> {: .solution}
 {: .challenge}
 
 ## Constructing a substitution

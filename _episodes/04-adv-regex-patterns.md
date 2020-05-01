@@ -48,7 +48,7 @@ birds %>%
  4 LBG               7-12-19   Magpie-lark        4                      TRUE   
  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                      TRUE   
  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                  TRUE   
- 7 Lake Burley   Gr… 14/12/19  Crimson Rosella    4                      TRUE   
+ 7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                      TRUE   
  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                      TRUE   
  9 Mt. Majura        23/2/20   Magpie lark        12                     TRUE   
 10 Downer Oval       18/11/19  King-Parrot        6                      TRUE   
@@ -97,7 +97,7 @@ birds %>%
  4 LBG               7-12-19   Magpie-lark        4                      FALSE  
  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                      FALSE  
  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                  FALSE  
- 7 Lake Burley   Gr… 14/12/19  Crimson Rosella    4                      FALSE  
+ 7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                      FALSE  
  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                      FALSE  
  9 Mt. Majura        23/2/20   Magpie lark        12                     TRUE   
 10 Downer Oval       18/11/19  King-Parrot        6                      FALSE  
@@ -114,6 +114,38 @@ birds %>%
 >
 > Write a regex pattern using `str_extract()` that will extract the entire bracketed statement in the 
 > `count` column of the birds data.
+> > ## Solution
+> > To match a `(` in text, you will need the regex pattern `\(`, which is created using the string 
+> > `"\\("`.
+> > 
+> > To extract a bracked statement, we will need to escape both the closing and opening brackets, 
+> > and use the unescaped `.` wildcard to match any characters inbetween.
+> > 
+> > ~~~
+> > birds %>% 
+> >     mutate(bracketed = str_extract(count, "\\(.+\\)"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location        date     species         count             bracketed         
+> >    <chr>           <chr>    <chr>           <chr>             <chr>             
+> >  1 Mount. Ainslie  21/12/19 Magpie          10                <NA>              
+> >  2 Black Mtn       09/02/2… Gang-gang cock… 2                 <NA>              
+> >  3 Botanic Gardens 15/2/20  Magpie          1 (didn't see it… (didn't see it, b…
+> >  4 LBG             7-12-19  Magpie-lark     4                 <NA>              
+> >  5 Mt  Ainslie     16/2/20  Gang Gang cock… 2                 <NA>              
+> >  6 Ainslie Oval    Last Su… Sulphur-creste… Eight             <NA>              
+> >  7 Lake Burley   … 14-12-19 Crimson Rosella 4                 <NA>              
+> >  8 Lake Burley Gr… 8/2/20   Gang gang cock… 9                 <NA>              
+> >  9 Mt. Majura      23/2/20  Magpie lark     12                <NA>              
+> > 10 Downer Oval     18/11/19 King-Parrot     6                 <NA>              
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 ## Shorthand symbols
@@ -158,7 +190,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark      4                    FALSE       
  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                    TRUE        
  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight                FALSE       
- 7 Lake Burley   G… 14/12/19  Crimson Rosella  4                    FALSE       
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella  4                    FALSE       
  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                    FALSE       
  9 Mt. Majura       23/2/20   Magpie lark      12                   FALSE       
 10 Downer Oval      18/11/19  King-Parrot      6                    FALSE       
@@ -185,7 +217,7 @@ birds %>%
  4 LBG               7-12-19   Magpie-lark       4                     <NA>     
  5 Mt  Ainslie       16/2/20   Gang Gang cockat… 2                     <NA>     
  6 Ainslie Oval      Last Sun… Sulphur-crested … Eight                 <NA>     
- 7 Lake Burley   Gr… 14/12/19  Crimson Rosella   4                     <NA>     
+ 7 Lake Burley   Gr… 14-12-19  Crimson Rosella   4                     <NA>     
  8 Lake Burley Grif… 8/2/20    Gang gang cockat… 9                     <NA>     
  9 Mt. Majura        23/2/20   Magpie lark       12                    <NA>     
 10 Downer Oval       18/11/19  King-Parrot       6                     <NA>     
@@ -201,6 +233,71 @@ birds %>%
 > 2. Using `str_extract()`, write a regex pattern that uses `\w` and `\s` to extract the *first* two
 > words of each entry from the `location` column of the birds data.
 > Is your result any different if you use `\S` and `\s` instead?
+> > ## Solution
+> > 1.
+> > **Old pattern**: `"^([0-9]{2}[/-]?){3}$"`
+> > 
+> > **New pattern**: `"^(\\d{2}\\D?){3}$"`
+> > 
+> > 2. `\w+\s\w+` matches two words followed by a space
+> > 
+> > ~~~
+> > # Using \w and \s
+> > birds %>% 
+> >     mutate(first_two = str_extract(location, "\\w+\\s\\w+"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species           count               first_two   
+> >    <chr>            <chr>     <chr>             <chr>               <chr>       
+> >  1 Mount. Ainslie   21/12/19  Magpie            10                  <NA>        
+> >  2 Black Mtn        09/02/20… Gang-gang cockat… 2                   Black Mtn   
+> >  3 Botanic Gardens  15/2/20   Magpie            1 (didn't see it, … Botanic Gar…
+> >  4 LBG              7-12-19   Magpie-lark       4                   <NA>        
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cockat… 2                   <NA>        
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested … Eight               Ainslie Oval
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella   4                   Lake Burley 
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cockat… 9                   Lake Burley 
+> >  9 Mt. Majura       23/2/20   Magpie lark       12                  <NA>        
+> > 10 Downer Oval      18/11/19  King-Parrot       6                   Downer Oval 
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Using \S and \s
+> > birds %>% 
+> >     mutate(first_two = str_extract(location, "\\S+\\s\\S+"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species           count               first_two   
+> >    <chr>            <chr>     <chr>             <chr>               <chr>       
+> >  1 Mount. Ainslie   21/12/19  Magpie            10                  Mount. Ains…
+> >  2 Black Mtn        09/02/20… Gang-gang cockat… 2                   Black Mtn   
+> >  3 Botanic Gardens  15/2/20   Magpie            1 (didn't see it, … Botanic Gar…
+> >  4 LBG              7-12-19   Magpie-lark       4                   <NA>        
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cockat… 2                   <NA>        
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested … Eight               Ainslie Oval
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella   4                   Lake Burley 
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cockat… 9                   Lake Burley 
+> >  9 Mt. Majura       23/2/20   Magpie lark       12                  Mt. Majura  
+> > 10 Downer Oval      18/11/19  King-Parrot       6                   Downer Oval 
+> > ~~~
+> > {: .output}
+> > You will notice that this misses the entry in row 5 because there are two spaces between the 
+> > first and second words. To match this as well, you will need to add the `+` quantifier to the
+> > `\s` pattern.
+> {: .solution}
 {: .challenge}
 
 ## Additional anchoring
@@ -231,7 +328,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark       4                     <NA>      
  5 Mt  Ainslie      16/2/20   Gang Gang cockat… 2                     <NA>      
  6 Ainslie Oval     Last Sun… Sulphur-crested … Eight                 <NA>      
- 7 Lake Burley   G… 14/12/19  Crimson Rosella   4                     <NA>      
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella   4                     <NA>      
  8 Lake Burley Gri… 8/2/20    Gang gang cockat… 9                    " gang "   
  9 Mt. Majura       23/2/20   Magpie lark       12                    <NA>      
 10 Downer Oval      18/11/19  King-Parrot       6                     <NA>      
@@ -259,7 +356,7 @@ birds %>%
  4 LBG             7-12-19   Magpie-lark      4                  <NA>           
  5 Mt  Ainslie     16/2/20   Gang Gang cocka… 2                  <NA>           
  6 Ainslie Oval    Last Sun… Sulphur-crested… Eight              <NA>           
- 7 Lake Burley   … 14/12/19  Crimson Rosella  4                  <NA>           
+ 7 Lake Burley   … 14-12-19  Crimson Rosella  4                  <NA>           
  8 Lake Burley Gr… 8/2/20    Gang gang cocka… 9                  gang           
  9 Mt. Majura      23/2/20   Magpie lark      12                 <NA>           
 10 Downer Oval     18/11/19  King-Parrot      6                  <NA>           
@@ -288,7 +385,7 @@ birds %>%
  4 LBG               7-12-19   Magpie-lark        4                     FALSE   
  5 Mt  Ainslie       16/2/20   Gang Gang cockatoo 2                     FALSE   
  6 Ainslie Oval      Last Sun… Sulphur-crested c… Eight                 FALSE   
- 7 Lake Burley   Gr… 14/12/19  Crimson Rosella    4                     TRUE    
+ 7 Lake Burley   Gr… 14-12-19  Crimson Rosella    4                     TRUE    
  8 Lake Burley Grif… 8/2/20    Gang gang cockatoo 9                     TRUE    
  9 Mt. Majura        23/2/20   Magpie lark        12                    FALSE   
 10 Downer Oval       18/11/19  King-Parrot        6                     FALSE   
@@ -327,7 +424,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark        4                    Ma        
  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    Ga        
  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                Su        
- 7 Lake Burley   G… 14/12/19  Crimson Rosella    4                    Cr        
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    Cr        
  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    Ga        
  9 Mt. Majura       23/2/20   Magpie lark        12                   Ma        
 10 Downer Oval      18/11/19  King-Parrot        6                    Ki        
@@ -357,7 +454,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark        4                    <NA>      
  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    oo        
  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                oo        
- 7 Lake Burley   G… 14/12/19  Crimson Rosella    4                    ll        
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    ll        
  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    oo        
  9 Mt. Majura       23/2/20   Magpie lark        12                   <NA>      
 10 Downer Oval      18/11/19  King-Parrot        6                    rr        
@@ -371,6 +468,90 @@ birds %>%
 > 2. What is a regex pattern that would match two words that start with the same letter (note that 
 > just the matched text is captured by grouping brackets, not any boundary information)? Test your 
 > pattern out using `str_extract()` on the `species` and `location` column of the birds data.
+> > ## Solution
+> > 1. Doubled letters can be matched with the pattern `(\w)\1`
+> > 
+> > ~~~
+> > birds %>% 
+> >     mutate(doubled_letters = str_extract(location, "(\\w)\\1"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location        date      species          count              doubled_letters
+> >    <chr>           <chr>     <chr>            <chr>              <chr>          
+> >  1 Mount. Ainslie  21/12/19  Magpie           10                 <NA>           
+> >  2 Black Mtn       09/02/20… Gang-gang cocka… 2                  <NA>           
+> >  3 Botanic Gardens 15/2/20   Magpie           1 (didn't see it,… <NA>           
+> >  4 LBG             7-12-19   Magpie-lark      4                  <NA>           
+> >  5 Mt  Ainslie     16/2/20   Gang Gang cocka… 2                  <NA>           
+> >  6 Ainslie Oval    Last Sun… Sulphur-crested… Eight              <NA>           
+> >  7 Lake Burley   … 14-12-19  Crimson Rosella  4                  ff             
+> >  8 Lake Burley Gr… 8/2/20    Gang gang cocka… 9                  ff             
+> >  9 Mt. Majura      23/2/20   Magpie lark      12                 <NA>           
+> > 10 Downer Oval     18/11/19  King-Parrot      6                  <NA>           
+> > ~~~
+> > {: .output}
+> > 2. The pattern `\b(\w).+\b\1\w+` will match two words that start with the same letter. The pattern
+> > can be read as "Match a word boundary (`\b`) followed by a word character (`\w`), then one or more
+> > of any character (`.+`) followed by a word boundary (`\b`) and then a repeat of the word character
+> > we first matched (`\1`) and finally one or more word characters (`\w+`)"
+> > 
+> > ~~~
+> > birds %>% 
+> >     mutate(starts_same = str_extract(location, "\\b(\\w).+\\b\\1\\w+"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species           count                starts_same
+> >    <chr>            <chr>     <chr>             <chr>                <chr>      
+> >  1 Mount. Ainslie   21/12/19  Magpie            10                   <NA>       
+> >  2 Black Mtn        09/02/20… Gang-gang cockat… 2                    <NA>       
+> >  3 Botanic Gardens  15/2/20   Magpie            1 (didn't see it, b… <NA>       
+> >  4 LBG              7-12-19   Magpie-lark       4                    <NA>       
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cockat… 2                    <NA>       
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested … Eight                <NA>       
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella   4                    <NA>       
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cockat… 9                    <NA>       
+> >  9 Mt. Majura       23/2/20   Magpie lark       12                   Mt. Majura 
+> > 10 Downer Oval      18/11/19  King-Parrot       6                    <NA>       
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > birds %>% 
+> >     mutate(starts_same = str_extract(species, "\\b(\\w).+\\b\\1\\w+"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species          count               starts_same  
+> >    <chr>            <chr>     <chr>            <chr>               <chr>        
+> >  1 Mount. Ainslie   21/12/19  Magpie           10                  <NA>         
+> >  2 Black Mtn        09/02/20… Gang-gang cocka… 2                   <NA>         
+> >  3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, … <NA>         
+> >  4 LBG              7-12-19   Magpie-lark      4                   <NA>         
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   Gang Gang    
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               crested cock…
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella  4                   <NA>         
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   <NA>         
+> >  9 Mt. Majura       23/2/20   Magpie lark      12                  <NA>         
+> > 10 Downer Oval      18/11/19  King-Parrot      6                   <NA>         
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 ## Multiple groupings
@@ -397,7 +578,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark        4                    <NA>      
  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    <NA>      
  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                <NA>      
- 7 Lake Burley   G… 14/12/19  Crimson Rosella    4                    <NA>      
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    <NA>      
  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    <NA>      
  9 Mt. Majura       23/2/20   Magpie lark        12                   <NA>      
 10 Downer Oval      18/11/19  King-Parrot        6                    <NA>      
@@ -428,7 +609,7 @@ birds %>%
 >  4 LBG            7-12-19  Magpie-lark   4               FALSE       FALSE      
 >  5 Mt  Ainslie    16/2/20  Gang Gang co… 2               TRUE        TRUE       
 >  6 Ainslie Oval   Last Su… Sulphur-cres… Eight           TRUE        TRUE       
->  7 Lake Burley  … 14/12/19 Crimson Rose… 4               FALSE       TRUE       
+>  7 Lake Burley  … 14-12-19 Crimson Rose… 4               FALSE       TRUE       
 >  8 Lake Burley G… 8/2/20   Gang gang co… 9               TRUE        TRUE       
 >  9 Mt. Majura     23/2/20  Magpie lark   12              FALSE       FALSE      
 > 10 Downer Oval    18/11/19 King-Parrot   6               FALSE       TRUE       
@@ -436,4 +617,28 @@ birds %>%
 > {: .output}
 > Why are the results different and what text is being matched by each? Check if you are correct by
 > running them with `str_extract()` instead.
-{: .challenge}
+> > ## Solution
+> > The first pattern matches three letters where the third letter is the same as the first letter (XYX)
+> > while the second pattern matches three letters where the third letter is the same as the second
+> > letter (XYY).
+> > 
+> > ~~~
+> > birds %>% 
+> >   mutate(
+> >     pattern_one = str_extract(species, "(\\w)(\\w)\\1"),
+> >     pattern_two = str_extract(species, "(\\w)(\\w)\\2")
+> >   )
+> > > {: .solution}
+> > {: .challenge}
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error: <text>:6:1: unexpected '>'
+> > 5:   )
+> > 6: >
+> >    ^
+> > ~~~
+> > {: .error}

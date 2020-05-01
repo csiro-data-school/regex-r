@@ -48,12 +48,104 @@ of values, that must all be of the same data type (see the
 for a more detailed explanation). 
 
 > ## Fruit vectors
-> The `stringr` package has an inbuilt text vector for practicing text manipulation called `fruit`.
+> The `stringr` package (part of the `tidyverse`) has an inbuilt text vector for practicing text 
+> manipulation called `fruit`.
 > Load the `stringr` package and explore the `fruit` vector to answer the following:
 > 
 > 1. How many elements are in the `fruit` vector?
 > 2. What is the value of the first element?
 > 3. What is the value of the last element?
+>
+> > ## Solution
+> >
+> >~~~
+> >library(stringr)
+> >
+> ># Look at it
+> >fruit
+> >~~~
+> >{: .language-r}
+> >
+> >
+> >
+> >~~~
+> > [1] "apple"             "apricot"           "avocado"          
+> > [4] "banana"            "bell pepper"       "bilberry"         
+> > [7] "blackberry"        "blackcurrant"      "blood orange"     
+> >[10] "blueberry"         "boysenberry"       "breadfruit"       
+> >[13] "canary melon"      "cantaloupe"        "cherimoya"        
+> >[16] "cherry"            "chili pepper"      "clementine"       
+> >[19] "cloudberry"        "coconut"           "cranberry"        
+> >[22] "cucumber"          "currant"           "damson"           
+> >[25] "date"              "dragonfruit"       "durian"           
+> >[28] "eggplant"          "elderberry"        "feijoa"           
+> >[31] "fig"               "goji berry"        "gooseberry"       
+> >[34] "grape"             "grapefruit"        "guava"            
+> >[37] "honeydew"          "huckleberry"       "jackfruit"        
+> >[40] "jambul"            "jujube"            "kiwi fruit"       
+> >[43] "kumquat"           "lemon"             "lime"             
+> >[46] "loquat"            "lychee"            "mandarine"        
+> >[49] "mango"             "mulberry"          "nectarine"        
+> >[52] "nut"               "olive"             "orange"           
+> >[55] "pamelo"            "papaya"            "passionfruit"     
+> >[58] "peach"             "pear"              "persimmon"        
+> >[61] "physalis"          "pineapple"         "plum"             
+> >[64] "pomegranate"       "pomelo"            "purple mangosteen"
+> >[67] "quince"            "raisin"            "rambutan"         
+> >[70] "raspberry"         "redcurrant"        "rock melon"       
+> >[73] "salal berry"       "satsuma"           "star fruit"       
+> >[76] "strawberry"        "tamarillo"         "tangerine"        
+> >[79] "ugli fruit"        "watermelon"       
+> >~~~
+> >{: .output}
+> >From printing `fruit` to the console we can see that it has 80 elements, with `apple` being the
+> >first and `watermelon` the last.
+> >
+> >We can confirm that in code with:
+> >
+> >~~~
+> > # How many elements
+> > length(fruit)
+> >~~~
+> >{: .language-r}
+> >
+> >
+> >
+> >~~~
+> >[1] 80
+> >~~~
+> >{: .output}
+> >
+> >
+> >
+> >~~~
+> > # First element
+> >fruit[1]
+> >~~~
+> >{: .language-r}
+> >
+> >
+> >
+> >~~~
+> >[1] "apple"
+> >~~~
+> >{: .output}
+> >
+> >
+> >
+> >~~~
+> > # Last element
+> >fruit[length(fruit)]
+> >~~~
+> >{: .language-r}
+> >
+> >
+> >
+> >~~~
+> >[1] "watermelon"
+> >~~~
+> >{: .output}
+> {: .solution}
 {: .challenge}
 
 ## Finding fruit
@@ -98,14 +190,33 @@ Since only the second element of `fruit` is `apricot`, only the second element o
 > 4. `str_detect(fruit, "berry")`
 > 5. `str_detect(fruit, " berry")`
 >
+> **Tip:** You can use the `sum()` function on a vector of logical values to count the number of 
+> `TRUE` values. `sum(c(FALSE, TRUE, FALSE, TRUE))` will give the value `2`.
+>
+> > ## Solution
+> > 
+> > 1. Two. Matches both "apple" and "pineapple"
+> > 2. Three. Matches "mandarine", "nectarine", and "tangerine"
+> > 3. Zero. Upper/lowercase matters. "Banana" is not the same as "banana"
+> > 4. Fourteen. There are a lot of berries
+> > 5. Two. Spaces are matched just like letters. Only "goji berry" and "salal berry" have the " berry"
+> > pattern
+> {: .solution}
 {: .challenge}
 
 > ## Working with `str_detect()`
 > Write a `str_detect()` pattern that will find the following fruits:
 > 
-> 1. `bell pepper` and `chilli pepper`.
-> 2. `clementine` and `cloudberry`.
-> 3. `kiwi fruit`, `star fruit`, and `ugli fruit` (but not `breadfruit`, `dragonfruit`, etc.).
+> 1. `canary melon`, `rock melon`, and `watermelon`.
+> 2. `kiwi fruit`, `star fruit`, and `ugli fruit` (but not `breadfruit`, `dragonfruit`, etc.).
+> 3. `clementine` and `cloudberry`.
+>
+> > ## Solution
+> > 
+> > 1. `str_detect(fruit, "melon")`
+> > 2. `str_detect(fruit, " fruit")`
+> > 3. `str_detect(fruit, "cl")`
+> {: .solution}
 {: .challenge}
 
 ## Regular expression syntax
@@ -117,6 +228,10 @@ has a common structure, but might have very different text.
 > ## Specific currants
 > In words, how could we identify 'blackcurrant' and 'redcurrant' from the list of fruits, 
 > while ignoring the plain 'currant'? 
+> > ## Solution
+> > A possible solution: 
+> > Any fruit with a prefix before the text 'currant'
+> {: .solution}
 {: .challenge}
 
 ## Wildcards
@@ -167,8 +282,23 @@ str_detect(fruit, ".currant")
 {: .output}
 
 > ## Using wildcards
-> How many fruits have the letter `e` two characters after the letter `a`?
+> How many fruits have the letter `e` two characters **after** the letter `a`?
+> > ## Solution
+> > 
+> > ~~~
+> > sum(str_detect(fruit, "a..e"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 5
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
+
 
 This wildcard symbol can be useful when you know the overall structure of the text you are trying to 
 match, but the exact text is not important.
@@ -176,10 +306,6 @@ match, but the exact text is not important.
 > ## What value?
 > What are the potential benefits of an approach like this? Can you imagine any problems you might
 > encounter?
-> > ## Solution
-> > Reproducible, repeatable, extensible, recorded and clear. 
-> > Complex, truly extensible, truly clear/readable?? 
-> {: .solution}
 {: .discussion}
 
 ## Text in data frames
@@ -255,4 +381,46 @@ framed_fruit %>%
 > 
 > 1. All currants (`blackcurrant`, `redcurrant`, and `currant`)
 > 2. Just the `blackcurrant` and `redcurrant`
+>
+> > ## Solution
+> > 
+> > ~~~
+> > # All currants
+> > framed_fruit %>% 
+> >     filter(str_detect(fruit_name, "currant"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 3 x 1
+> >   fruit_name  
+> >   <chr>       
+> > 1 blackcurrant
+> > 2 currant     
+> > 3 redcurrant  
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Not the plain currant
+> > framed_fruit %>% 
+> >     filter(str_detect(fruit_name, ".currant"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 2 x 1
+> >   fruit_name  
+> >   <chr>       
+> > 1 blackcurrant
+> > 2 redcurrant  
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}

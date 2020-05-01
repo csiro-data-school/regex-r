@@ -50,7 +50,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark        4                    7-12-19   
  5 Mt  Ainslie      16/2/20   Gang Gang cockatoo 2                    16/2/20   
  6 Ainslie Oval     Last Sun… Sulphur-crested c… Eight                19/1/20   
- 7 Lake Burley   G… 14/12/19  Crimson Rosella    4                    14/12/19  
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella    4                    14-12-19  
  8 Lake Burley Gri… 8/2/20    Gang gang cockatoo 9                    8/2/20    
  9 Mt. Majura       23/2/20   Magpie lark        12                   23/2/20   
 10 Downer Oval      18/11/19  King-Parrot        6                    18/11/19  
@@ -80,7 +80,7 @@ birds %>%
  4 LBG             7-12-19   Magpie-lark     4                  First           
  5 Mt  Ainslie     16/2/20   Gang Gang cock… 2                  First  Ainslie  
  6 Ainslie Oval    Last Sun… Sulphur-creste… Eight              First Oval      
- 7 Lake Burley   … 14/12/19  Crimson Rosella 4                  First Burley   …
+ 7 Lake Burley   … 14-12-19  Crimson Rosella 4                  First Burley   …
  8 Lake Burley Gr… 8/2/20    Gang gang cock… 9                  First Burley Gr…
  9 Mt. Majura      23/2/20   Magpie lark     12                 First. Majura   
 10 Downer Oval     18/11/19  King-Parrot     6                  First Oval      
@@ -108,7 +108,7 @@ birds %>%
  4 LBG             7-12-19   Magpie-lark     4                  LBG             
  5 Mt  Ainslie     16/2/20   Gang Gang cock… 2                  First  Ainslie  
  6 Ainslie Oval    Last Sun… Sulphur-creste… Eight              First Oval      
- 7 Lake Burley   … 14/12/19  Crimson Rosella 4                  First Burley   …
+ 7 Lake Burley   … 14-12-19  Crimson Rosella 4                  First Burley   …
  8 Lake Burley Gr… 8/2/20    Gang gang cock… 9                  First Burley Gr…
  9 Mt. Majura      23/2/20   Magpie lark     12                 First. Majura   
 10 Downer Oval     18/11/19  King-Parrot     6                  First Oval      
@@ -118,9 +118,93 @@ birds %>%
 > ## Replace once
 > Using `str_replace()` and the birds data:
 >
-> 1. Replace the "Eight" in the `count` column with the digit "8"
+> 1. Replace the "Eight" in the `count` column with the character "8"
 > 2. Replace all hyphens ("-") in the `species` column with spaces (" ")
 > 3. Replace the digits for the year in the `date` column with the text "Year"
+> > ## Solution
+> > 
+> > ~~~
+> > # Replace the "Eight" in the count column with the character "8"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace(count, "Eight", "8"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location       date     species         count            replaced_data       
+> >    <chr>          <chr>    <chr>           <chr>            <chr>               
+> >  1 Mount. Ainslie 21/12/19 Magpie          10               10                  
+> >  2 Black Mtn      09/02/2… Gang-gang cock… 2                2                   
+> >  3 Botanic Garde… 15/2/20  Magpie          1 (didn't see i… 1 (didn't see it, b…
+> >  4 LBG            7-12-19  Magpie-lark     4                4                   
+> >  5 Mt  Ainslie    16/2/20  Gang Gang cock… 2                2                   
+> >  6 Ainslie Oval   Last Su… Sulphur-creste… Eight            8                   
+> >  7 Lake Burley  … 14-12-19 Crimson Rosella 4                4                   
+> >  8 Lake Burley G… 8/2/20   Gang gang cock… 9                9                   
+> >  9 Mt. Majura     23/2/20  Magpie lark     12               12                  
+> > 10 Downer Oval    18/11/19 King-Parrot     6                6                   
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Replace all hyphens in the species column with spaces
+> > birds %>% 
+> >     mutate(replaced_data = str_replace(species, "-", " "))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location        date     species         count             replaced_data     
+> >    <chr>           <chr>    <chr>           <chr>             <chr>             
+> >  1 Mount. Ainslie  21/12/19 Magpie          10                Magpie            
+> >  2 Black Mtn       09/02/2… Gang-gang cock… 2                 Gang gang cockatoo
+> >  3 Botanic Gardens 15/2/20  Magpie          1 (didn't see it… Magpie            
+> >  4 LBG             7-12-19  Magpie-lark     4                 Magpie lark       
+> >  5 Mt  Ainslie     16/2/20  Gang Gang cock… 2                 Gang Gang cockatoo
+> >  6 Ainslie Oval    Last Su… Sulphur-creste… Eight             Sulphur crested c…
+> >  7 Lake Burley   … 14-12-19 Crimson Rosella 4                 Crimson Rosella   
+> >  8 Lake Burley Gr… 8/2/20   Gang gang cock… 9                 Gang gang cockatoo
+> >  9 Mt. Majura      23/2/20  Magpie lark     12                Magpie lark       
+> > 10 Downer Oval     18/11/19 King-Parrot     6                 King Parrot       
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Replace the digits for the year in the date column with the text "Year"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace(date, "\\d+$", "Year"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species          count               replaced_data
+> >    <chr>            <chr>     <chr>            <chr>               <chr>        
+> >  1 Mount. Ainslie   21/12/19  Magpie           10                  21/12/Year   
+> >  2 Black Mtn        09/02/20… Gang-gang cocka… 2                   09/02/Year   
+> >  3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, … 15/2/Year    
+> >  4 LBG              7-12-19   Magpie-lark      4                   7-12-Year    
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   16/2/Year    
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               Last Sunday  
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella  4                   14-12-Year   
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   8/2/Year     
+> >  9 Mt. Majura       23/2/20   Magpie lark      12                  23/2/Year    
+> > 10 Downer Oval      18/11/19  King-Parrot      6                   18/11/Year   
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 ## Replace more than once
@@ -146,7 +230,7 @@ birds %>%
  4 LBG              7-12-19  Magpie-lark      4                   _BG           
  5 Mt  Ainslie      16/2/20  Gang Gang cocka… 2                   _t  Ainslie   
  6 Ainslie Oval     Last Su… Sulphur-crested… Eight               _inslie Oval  
- 7 Lake Burley   G… 14/12/19 Crimson Rosella  4                   _ake Burley  …
+ 7 Lake Burley   G… 14-12-19 Crimson Rosella  4                   _ake Burley  …
  8 Lake Burley Gri… 8/2/20   Gang gang cocka… 9                   _ake Burley G…
  9 Mt. Majura       23/2/20  Magpie lark      12                  _t. Majura    
 10 Downer Oval      18/11/19 King-Parrot      6                   _owner Oval   
@@ -174,7 +258,7 @@ birds %>%
  4 LBG              7-12-19  Magpie-lark      4                   ___           
  5 Mt  Ainslie      16/2/20  Gang Gang cocka… 2                   _t  _inslie   
  6 Ainslie Oval     Last Su… Sulphur-crested… Eight               _inslie _val  
- 7 Lake Burley   G… 14/12/19 Crimson Rosella  4                   _ake _urley  …
+ 7 Lake Burley   G… 14-12-19 Crimson Rosella  4                   _ake _urley  …
  8 Lake Burley Gri… 8/2/20   Gang gang cocka… 9                   _ake _urley _…
  9 Mt. Majura       23/2/20  Magpie lark      12                  _t. _ajura    
 10 Downer Oval      18/11/19 King-Parrot      6                   _owner _val   
@@ -205,7 +289,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark      4                    Mgp-lrk     
  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                    Gng Gng cckt
  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight                Slphr-crstd…
- 7 Lake Burley   G… 14/12/19  Crimson Rosella  4                    Crmsn Rsll  
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella  4                    Crmsn Rsll  
  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                    Gng gng cckt
  9 Mt. Majura       23/2/20   Magpie lark      12                   Mgp lrk     
 10 Downer Oval      18/11/19  King-Parrot      6                    Kng-Prrt    
@@ -219,6 +303,118 @@ birds %>%
 > 2. Replace any word seven letters or longer in the `species` column with the text "long"
 > 3. Delete any non-numeric characters from the `count` column
 > 4. Create an `abbreviation` column containing just the uppercase letters from the `location` column
+> > ## Solution
+> > 
+> > ~~~
+> > # Replace each word in the location column with the text "word"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(location, "\\w+", "word"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location        date      species          count               replaced_data 
+> >    <chr>           <chr>     <chr>            <chr>               <chr>         
+> >  1 Mount. Ainslie  21/12/19  Magpie           10                  word. word    
+> >  2 Black Mtn       09/02/20… Gang-gang cocka… 2                   word word     
+> >  3 Botanic Gardens 15/2/20   Magpie           1 (didn't see it, … word word     
+> >  4 LBG             7-12-19   Magpie-lark      4                   word          
+> >  5 Mt  Ainslie     16/2/20   Gang Gang cocka… 2                   word  word    
+> >  6 Ainslie Oval    Last Sun… Sulphur-crested… Eight               word word     
+> >  7 Lake Burley   … 14-12-19  Crimson Rosella  4                   word word   w…
+> >  8 Lake Burley Gr… 8/2/20    Gang gang cocka… 9                   word word word
+> >  9 Mt. Majura      23/2/20   Magpie lark      12                  word. word    
+> > 10 Downer Oval     18/11/19  King-Parrot      6                   word word     
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Replace any word seven letters or longer in the species column with the text "long"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(species, "\\w{7,}", "long"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species          count               replaced_data
+> >    <chr>            <chr>     <chr>            <chr>               <chr>        
+> >  1 Mount. Ainslie   21/12/19  Magpie           10                  Magpie       
+> >  2 Black Mtn        09/02/20… Gang-gang cocka… 2                   Gang-gang lo…
+> >  3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, … Magpie       
+> >  4 LBG              7-12-19   Magpie-lark      4                   Magpie-lark  
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   Gang Gang lo…
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               long-long lo…
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella  4                   long long    
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   Gang gang lo…
+> >  9 Mt. Majura       23/2/20   Magpie lark      12                  Magpie lark  
+> > 10 Downer Oval      18/11/19  King-Parrot      6                   King-Parrot  
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Delete any non-numeric characters from the count column
+> > birds %>% 
+> >     mutate(replaced_data = str_remove_all(count, "\\D"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species          count               replaced_data
+> >    <chr>            <chr>     <chr>            <chr>               <chr>        
+> >  1 Mount. Ainslie   21/12/19  Magpie           10                  "10"         
+> >  2 Black Mtn        09/02/20… Gang-gang cocka… 2                   "2"          
+> >  3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, … "1"          
+> >  4 LBG              7-12-19   Magpie-lark      4                   "4"          
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   "2"          
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               ""           
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella  4                   "4"          
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   "9"          
+> >  9 Mt. Majura       23/2/20   Magpie lark      12                  "12"         
+> > 10 Downer Oval      18/11/19  King-Parrot      6                   "6"          
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Create an abbreviation column containing just the uppercase letters from the location column
+> > birds %>% 
+> >     mutate(abbreviation = str_remove_all(location, "[^A-Z]"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species          count                abbreviation
+> >    <chr>            <chr>     <chr>            <chr>                <chr>       
+> >  1 Mount. Ainslie   21/12/19  Magpie           10                   MA          
+> >  2 Black Mtn        09/02/20… Gang-gang cocka… 2                    BM          
+> >  3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, b… BG          
+> >  4 LBG              7-12-19   Magpie-lark      4                    LBG         
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                    MA          
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight                AO          
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella  4                    LBG         
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                    LBG         
+> >  9 Mt. Majura       23/2/20   Magpie lark      12                   MM          
+> > 10 Downer Oval      18/11/19  King-Parrot      6                    DO          
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 ## Use match in replacement
@@ -248,7 +444,7 @@ birds %>%
  4 LBG             7-12-19  Magpie-lark      4                 *Magpie*-*lark*  
  5 Mt  Ainslie     16/2/20  Gang Gang cocka… 2                 *Gang* *Gang* *c…
  6 Ainslie Oval    Last Su… Sulphur-crested… Eight             *Sulphur*-*crest…
- 7 Lake Burley   … 14/12/19 Crimson Rosella  4                 *Crimson* *Rosel…
+ 7 Lake Burley   … 14-12-19 Crimson Rosella  4                 *Crimson* *Rosel…
  8 Lake Burley Gr… 8/2/20   Gang gang cocka… 9                 *Gang* *gang* *c…
  9 Mt. Majura      23/2/20  Magpie lark      12                *Magpie* *lark*  
 10 Downer Oval     18/11/19 King-Parrot      6                 *King*-*Parrot*  
@@ -276,7 +472,7 @@ birds %>%
  4 LBG              7-12-19   Magpie-lark      4                   First: M, La…
  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   First: G, La…
  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               First: S, La…
- 7 Lake Burley   G… 14/12/19  Crimson Rosella  4                   First: C, La…
+ 7 Lake Burley   G… 14-12-19  Crimson Rosella  4                   First: C, La…
  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   First: G, La…
  9 Mt. Majura       23/2/20   Magpie lark      12                  First: M, La…
 10 Downer Oval      18/11/19  King-Parrot      6                   First: K, La…
@@ -306,7 +502,7 @@ birds %>%
  4 LBG           7-12-19  Magpie-lark    4              First: M, Last: k, Rest…
  5 Mt  Ainslie   16/2/20  Gang Gang coc… 2              First: G, Last: o, Rest…
  6 Ainslie Oval  Last Su… Sulphur-crest… Eight          First: S, Last: o, Rest…
- 7 Lake Burley … 14/12/19 Crimson Rosel… 4              First: C, Last: a, Rest…
+ 7 Lake Burley … 14-12-19 Crimson Rosel… 4              First: C, Last: a, Rest…
  8 Lake Burley … 8/2/20   Gang gang coc… 9              First: G, Last: o, Rest…
  9 Mt. Majura    23/2/20  Magpie lark    12             First: M, Last: k, Rest…
 10 Downer Oval   18/11/19 King-Parrot    6              First: K, Last: t, Rest…
@@ -322,6 +518,118 @@ birds %>%
 > `Crimson Rosella` should become `C__n R__a`
 > 4. Print the first and last *word* of each `species` using the template "First: <word>, Last: <word>"
 > (Tip: if you are having trouble, try including the boundary pattern -- `\b`)
+> > ## Solution
+> > 
+> > ~~~
+> > # Double each vowel in the location column
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(location, "([aeiou])", "\\1\\1"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location       date     species         count             replaced_data      
+> >    <chr>          <chr>    <chr>           <chr>             <chr>              
+> >  1 Mount. Ainslie 21/12/19 Magpie          10                Moouunt. Aiinsliiee
+> >  2 Black Mtn      09/02/2… Gang-gang cock… 2                 Blaack Mtn         
+> >  3 Botanic Garde… 15/2/20  Magpie          1 (didn't see it… Bootaaniic Gaardee…
+> >  4 LBG            7-12-19  Magpie-lark     4                 LBG                
+> >  5 Mt  Ainslie    16/2/20  Gang Gang cock… 2                 Mt  Aiinsliiee     
+> >  6 Ainslie Oval   Last Su… Sulphur-creste… Eight             Aiinsliiee Ovaal   
+> >  7 Lake Burley  … 14-12-19 Crimson Rosella 4                 Laakee Buurleey   …
+> >  8 Lake Burley G… 8/2/20   Gang gang cock… 9                 Laakee Buurleey Gr…
+> >  9 Mt. Majura     23/2/20  Magpie lark     12                Mt. Maajuuraa      
+> > 10 Downer Oval    18/11/19 King-Parrot     6                 Doowneer Ovaal     
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Convert all dates in the date column to have four digit year values
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(date, "\\b(\\d{2})$", "20\\1"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species          count               replaced_data
+> >    <chr>            <chr>     <chr>            <chr>               <chr>        
+> >  1 Mount. Ainslie   21/12/19  Magpie           10                  21/12/2019   
+> >  2 Black Mtn        09/02/20… Gang-gang cocka… 2                   09/02/2020   
+> >  3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, … 15/2/2020    
+> >  4 LBG              7-12-19   Magpie-lark      4                   7-12-2019    
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   16/2/2020    
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               Last Sunday  
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella  4                   14-12-2019   
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   8/2/2020     
+> >  9 Mt. Majura       23/2/20   Magpie lark      12                  23/2/2020    
+> > 10 Downer Oval      18/11/19  King-Parrot      6                   18/11/2019   
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Replace the middle letters of each word in the species column with two underscores
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(species, "(\\w)\\w+(\\w)", "\\1__\\2"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location         date      species          count               replaced_data
+> >    <chr>            <chr>     <chr>            <chr>               <chr>        
+> >  1 Mount. Ainslie   21/12/19  Magpie           10                  M__e         
+> >  2 Black Mtn        09/02/20… Gang-gang cocka… 2                   G__g-g__g c_…
+> >  3 Botanic Gardens  15/2/20   Magpie           1 (didn't see it, … M__e         
+> >  4 LBG              7-12-19   Magpie-lark      4                   M__e-l__k    
+> >  5 Mt  Ainslie      16/2/20   Gang Gang cocka… 2                   G__g G__g c_…
+> >  6 Ainslie Oval     Last Sun… Sulphur-crested… Eight               S__r-c__d c_…
+> >  7 Lake Burley   G… 14-12-19  Crimson Rosella  4                   C__n R__a    
+> >  8 Lake Burley Gri… 8/2/20    Gang gang cocka… 9                   G__g g__g c_…
+> >  9 Mt. Majura       23/2/20   Magpie lark      12                  M__e l__k    
+> > 10 Downer Oval      18/11/19  King-Parrot      6                   K__g-P__t    
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > # Print the first and last *word* of each location using the template "First: <word>, Last: <word>"
+> > birds %>% 
+> >     mutate(replaced_data = str_replace_all(species, "^(\\w+).+\\b(\\w+)$", "First: \\1, Last: \\2"))
+> > ~~~
+> > {: .language-r}
+> > 
+> > 
+> > 
+> > ~~~
+> > # A tibble: 10 x 5
+> >    location       date     species         count            replaced_data       
+> >    <chr>          <chr>    <chr>           <chr>            <chr>               
+> >  1 Mount. Ainslie 21/12/19 Magpie          10               Magpie              
+> >  2 Black Mtn      09/02/2… Gang-gang cock… 2                First: Gang, Last: …
+> >  3 Botanic Garde… 15/2/20  Magpie          1 (didn't see i… Magpie              
+> >  4 LBG            7-12-19  Magpie-lark     4                First: Magpie, Last…
+> >  5 Mt  Ainslie    16/2/20  Gang Gang cock… 2                First: Gang, Last: …
+> >  6 Ainslie Oval   Last Su… Sulphur-creste… Eight            First: Sulphur, Las…
+> >  7 Lake Burley  … 14-12-19 Crimson Rosella 4                First: Crimson, Las…
+> >  8 Lake Burley G… 8/2/20   Gang gang cock… 9                First: Gang, Last: …
+> >  9 Mt. Majura     23/2/20  Magpie lark     12               First: Magpie, Last…
+> > 10 Downer Oval    18/11/19 King-Parrot     6                First: King, Last: …
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
 
 ## Constructing a substitution
@@ -368,7 +676,7 @@ birds %>%
  4 LBG             7-12-19  Magpie-lark      4                 7-12-19          
  5 Mt  Ainslie     16/2/20  Gang Gang cocka… 2                 16/2/20          
  6 Ainslie Oval    Last Su… Sulphur-crested… Eight             Last Sunday      
- 7 Lake Burley   … 14/12/19 Crimson Rosella  4                 14/12/19         
+ 7 Lake Burley   … 14-12-19 Crimson Rosella  4                 14-12-19         
  8 Lake Burley Gr… 8/2/20   Gang gang cocka… 9                 8/2/20           
  9 Mt. Majura      23/2/20  Magpie lark      12                23/2/20          
 10 Downer Oval     18/11/19 King-Parrot      6                 18/11/19         
@@ -403,7 +711,7 @@ birds %>%
  4 LBG            7-12-19  Magpie-lark     4                 19:12:7 (old: 7-12…
  5 Mt  Ainslie    16/2/20  Gang Gang cock… 2                 20:2:16 (old: 16/2…
  6 Ainslie Oval   Last Su… Sulphur-creste… Eight             Last Sunday        
- 7 Lake Burley  … 14/12/19 Crimson Rosella 4                 19:12:14 (old: 14/…
+ 7 Lake Burley  … 14-12-19 Crimson Rosella 4                 19:12:14 (old: 14-…
  8 Lake Burley G… 8/2/20   Gang gang cock… 9                 20:2:8 (old: 8/2/2…
  9 Mt. Majura     23/2/20  Magpie lark     12                20:2:23 (old: 23/2…
 10 Downer Oval    18/11/19 King-Parrot     6                 19:11:18 (old: 18/…

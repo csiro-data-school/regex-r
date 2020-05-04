@@ -121,6 +121,7 @@ birds %>%
 > 1. Replace the "Eight" in the `count` column with the character "8"
 > 2. Replace all hyphens ("-") in the `species` column with spaces (" ")
 > 3. Replace the digits for the year in the `date` column with the text "Year"
+>
 > > ## Solution
 > > 
 > > ~~~
@@ -303,6 +304,7 @@ birds %>%
 > 2. Replace any word seven letters or longer in the `species` column with the text "long"
 > 3. Delete any non-numeric characters from the `count` column
 > 4. Create an `abbreviation` column containing just the uppercase letters from the `location` column
+>
 > > ## Solution
 > > 
 > > ~~~
@@ -518,6 +520,7 @@ birds %>%
 > `Crimson Rosella` should become `C__n R__a`
 > 4. Print the first and last *word* of each `species` using the template "First: <word>, Last: <word>"
 > (Tip: if you are having trouble, try including the boundary pattern -- `\b`)
+>
 > > ## Solution
 > > 
 > > ~~~
@@ -640,20 +643,20 @@ to "year:month:day (old: day/month/year)"
 
 1. Start by copying a real example of a whole string to match as your pattern
 
-*Pattern*: `21/12/19`
+**Pattern**: `21/12/19`
 
 2. Add any escape backslashes necessary of your text contains regex special symbols (not needed in this
 example)
 
-*Pattern*: `21/12/19`
+**Pattern**: `21/12/19`
 
 3. Circle the parts of the string you’d like to separately retain, with round brackets.
 
-*Pattern*: `((21)/(12)/(19))`
+**Pattern**: `((21)/(12)/(19))`
 
 4. Write out your replacement pattern, using backreferences to what you circled.
 
-*Pattern*: `((21)/(12)/(19))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+**Pattern**: `((21)/(12)/(19))`, **Replacement**: `\4:\3:\2 (old: \1)`
 
 5. At this stage, the substitution should work, but only for the specific real example string that you’ve started with. Test it to make sure.
 
@@ -690,7 +693,7 @@ will often be multiple regex patterns that match the 'correct' text. Your future
 if you can come up with a pattern that is easier to read.
 
 Using digit/non-digit distinction as a 'simple' solution:
-*Pattern*: `((\\d+)\\D(\\d+)\\D(\\d+))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+**Pattern**: `((\d+)\D(\d+)\D(\d+))`, **Replacement**: `\4:\3:\2 (old: \1)`
 
 
 ~~~
@@ -722,7 +725,7 @@ Can get more specific, for example adding error checking using number of digits.
 accuracy of matching for complexity, so consider how complex a pattern needs to be to match the sort
 of data you are likely to receive.
 
-*Pattern*: `((\\d{1,2})\\D(\\d{1,2})\\D(\\d{2}|\\d{4}))`, *Replacement*: `\\4:\\3:\\2 (old: \\1)`
+**Pattern**: `((\d{1,2})\D(\d{1,2})\D(\d{2}|\d{4}))`, **Replacement**: `\4:\3:\2 (old: \1)`
 
 > ## Putting it together
 > Create a cleaned version of the birds data called `clean_birds`. You will need to use multiple steps

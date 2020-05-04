@@ -228,6 +228,7 @@ has a common structure, but might have very different text.
 > ## Specific currants
 > In words, how could we identify 'blackcurrant' and 'redcurrant' from the list of fruits, 
 > while ignoring the plain 'currant'? 
+>
 > > ## Solution
 > > A possible solution: 
 > > Any fruit with a prefix before the text 'currant'
@@ -283,6 +284,7 @@ str_detect(fruit, ".currant")
 
 > ## Using wildcards
 > How many fruits have the letter `e` two characters **after** the letter `a`?
+>
 > > ## Solution
 > > 
 > > ~~~

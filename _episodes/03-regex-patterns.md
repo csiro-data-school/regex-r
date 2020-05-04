@@ -411,6 +411,7 @@ brackets is captured and can be reused.
 > Using `Gang( |-)gang` as a regex pattern works for rows two and eight, but fails to match the 
 > fifth row of the birds data (with "Gang Gang cockatoo"). Edit this pattern to detect all 
 > three rows.
+>
 > > ## Solution
 > > Lots of ways to do this. Could either include all three options within the grouping (`Gang( G| g|-g)ang`)
 > > or add a second grouping (`Gang( |-)(G|g)ang`).

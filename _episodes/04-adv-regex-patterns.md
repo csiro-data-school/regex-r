@@ -114,6 +114,7 @@ birds %>%
 >
 > Write a regex pattern using `str_extract()` that will extract the entire bracketed statement in the 
 > `count` column of the birds data.
+>
 > > ## Solution
 > > To match a `(` in text, you will need the regex pattern `\(`, which is created using the string 
 > > `"\\("`.
@@ -233,6 +234,7 @@ birds %>%
 > 2. Using `str_extract()`, write a regex pattern that uses `\w` and `\s` to extract the *first* two
 > words of each entry from the `location` column of the birds data.
 > Is your result any different if you use `\S` and `\s` instead?
+>
 > > ## Solution
 > > 1.
 > > **Old pattern**: `"^([0-9]{2}[/-]?){3}$"`
@@ -468,6 +470,7 @@ birds %>%
 > 2. What is a regex pattern that would match two words that start with the same letter (note that 
 > just the matched text is captured by grouping brackets, not any boundary information)? Test your 
 > pattern out using `str_extract()` on the `species` and `location` column of the birds data.
+>
 > > ## Solution
 > > 1. Doubled letters can be matched with the pattern `(\w)\1`
 > > 
@@ -617,6 +620,7 @@ birds %>%
 > {: .output}
 > Why are the results different and what text is being matched by each? Check if you are correct by
 > running them with `str_extract()` instead.
+>
 > > ## Solution
 > > The first pattern matches three letters where the third letter is the same as the first letter (XYX)
 > > while the second pattern matches three letters where the third letter is the same as the second

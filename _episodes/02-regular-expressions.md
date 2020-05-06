@@ -283,7 +283,7 @@ str_detect(fruit, ".currant")
 {: .output}
 
 > ## Using wildcards
-> How many fruits have the letter `e` two characters **after** the letter `a`?
+> How many fruits have the letter `e` three characters **after** the letter `a`?
 >
 > > ## Solution
 > > 
